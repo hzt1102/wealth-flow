@@ -7540,6 +7540,9 @@ function playFileAudio(file, doStore) {
     reader.readAsDataURL(file);
   }
 }
+// 默认背景音乐文件
+const DEFAULT_BGM = 'bgm.mp4';
+
 // 页面加载时检查是否有缓存音乐
 (function loadStoredBGM() {
   const data = localStorage.getItem('bgm_data');
@@ -7553,10 +7556,48 @@ function playFileAudio(file, doStore) {
     playFileAudio(file, false);
   } catch(e) { localStorage.removeItem('bgm_data'); localStorage.removeItem('bgm_name'); }
 })();
+
+function playDefaultBGM() {
+  const a = new Audio(DEFAULT_BGM);
+  a.loop = true;
+  a.volume = 0.3;
+  a.play().catch(() => {});
+  musicAudio = a;
+  musicMode = 'file';
+  musicOn = true;
+  const btn = document.getElementById('music-btn');
+  btn.classList.add('on');
+  btn.textContent = '♬';
+  // 缓存到浏览器
+  fetch(DEFAULT_BGM).then(r => r.blob()).then(blob => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try { localStorage.setItem('bgm_data', reader.result); localStorage.setItem('bgm_name', 'bgm.mp4'); } catch(e) {}
+    };
+    reader.readAsDataURL(blob);
+  }).catch(() => {});
+}
+
 function toggleMusic() {
   if (musicOn) { stopMusic(); return; }
-  const menu = document.getElementById('music-menu');
-  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+  // 如果有缓存音乐则播放缓存，否则播放默认BGM
+  if (localStorage.getItem('bgm_data')) {
+    // 从缓存加载
+    const data = localStorage.getItem('bgm_data');
+    try {
+      const arr = data.split(',');
+      const mime = arr[0].match(/:(.*?);/)[1];
+      const bytes = Uint8Array.from(atob(arr[1]), c => c.charCodeAt(0));
+      const blob = new Blob([bytes], { type: mime });
+      const file = new File([blob], localStorage.getItem('bgm_name') || 'bgm.mp3', { type: mime });
+      playFileAudio(file, false);
+    } catch(e) {
+      playDefaultBGM();
+    }
+  } else {
+    playDefaultBGM();
+  }
+  document.getElementById('music-menu').style.display = 'none';
 }
 function pickMusicFile() {
   document.getElementById('music-menu').style.display = 'none';
