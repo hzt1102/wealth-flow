@@ -75,26 +75,22 @@ body{
   gap:8px; font-size:0.85rem;
 }
 @media (min-width: 768px) { #top-bar{ grid-template-columns:repeat(9,1fr) 48px; } }
-#asset-toggle-btn{
-  grid-column:1/-1;
-  background:var(--panel); border:1px solid var(--border); border-radius:6px;
-  color:var(--muted); font-size:0.7rem; cursor:pointer; padding:4px 0; text-align:center;
-  display:none;
-}
-#asset-toggle-btn:hover{ border-color:var(--gold); color:var(--gold); }
-#asset-toggle-btn.show{ display:block; }
-#asset-inline{
-  display:none; padding:0 16px 10px; max-width:640px; margin:0 auto; width:100%;
+/* 顶部-layout */
+/* 统一明细面板 */
+#detail-inline{
+  display:none; padding:6px 8px; max-width:640px; margin:0 auto; width:100%;
   position:relative; z-index:49; background:var(--bg);
   border-bottom:1px solid var(--gold);
 }
-#asset-inline.open{ display:block; }
-/* 移动端：触点最小值 */
-.stat.clickable{ min-height:28px; -webkit-tap-highlight-color:transparent; }
-#asset-inline table{ width:100%; border-collapse:collapse; font-size:0.78rem; }
-#asset-inline th{ color:var(--muted); text-align:left; padding:4px; border-bottom:1px solid var(--border); font-weight:500; }
-#asset-inline td{ color:var(--white); padding:4px; border-bottom:1px solid rgba(42,42,53,0.4); }
-#asset-inline .empty{ color:var(--muted); text-align:center; padding:8px; font-size:0.8rem; }
+#detail-inline.open{ display:block; }
+#detail-inline table{ width:100%; border-collapse:collapse; font-size:0.72rem; }
+#detail-inline th{ color:var(--muted); text-align:left; padding:3px 4px; border-bottom:1px solid var(--border); font-weight:500; }
+#detail-inline td{ color:var(--white); padding:3px 4px; border-bottom:1px solid rgba(42,42,53,0.3); }
+#detail-inline .empty{ color:var(--muted); text-align:center; padding:6px; font-size:0.72rem; }
+#detail-inline .dl-row{ display:flex; justify-content:space-between; padding:2px 0; font-size:0.72rem; color:var(--white); border-bottom:1px solid rgba(42,42,53,0.2); }
+#detail-inline .dl-row .dl-label{ color:var(--muted); }
+#detail-inline .dl-row .dl-value{ font-weight:600; }
+#detail-inline .dl-total{ font-weight:700; color:var(--gold); border-top:1px solid var(--gold); margin-top:3px; padding-top:3px; }
 .stat{ background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:8px 10px; display:flex; flex-direction:column; position:relative; }
 .stat label{ color:var(--muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:1px; }
 .stat value{ font-size:0.95rem; color:var(--white); font-weight:600; }
@@ -112,15 +108,15 @@ body{
   display:none; 
 }
 #cash-tooltip .empty{ color:var(--muted); }
-#s-cash{ cursor:help; }
-/* 可点击的状态格（资产） */
-.stat.clickable{ cursor:pointer; }
+/* 所有clickable stat统一处理 */
+/* 可点击的状态格 */
+.stat.clickable{ cursor:pointer; position:relative; min-height:30px; -webkit-tap-highlight-color:transparent; }
 .stat.clickable:hover{ border-color:var(--gold); }
-.stat.clickable label{ display:flex; align-items:center; gap:2px; }
-.stat.clickable label::after{
-  content:'▸'; font-size:0.5rem; transition:transform 0.2s;
+.stat.clickable::after{
+  content:'▸'; position:absolute; top:50%; right:3px; transform:translateY(-50%);
+  color:var(--gold); font-size:0.8rem; transition:transform 0.2s; line-height:1;
 }
-.stat.clickable.open label::after{ content:'▾'; }
+.stat.clickable.open::after{ content:'▾'; }
 
 #game-main{ display:flex; flex-direction:column; align-items:center; padding:16px 16px 24px; width:100%; max-width:640px; margin:0 auto; gap:12px; }
 
@@ -348,9 +344,9 @@ body{
 
 @media (max-width:480px){
   #start-page h1{ font-size:2rem; }
-  #card-stage{ height:240px; }
-  .card-name{ font-size:1.25rem; }
-  .card-desc{ font-size:0.95rem; }
+  #card-stage{ height:250px; }
+  .card-name{ font-size:1.3rem; }
+  .card-desc{ font-size:1rem; }
 }
 /* ===== 手机端适配 ===== */
 @media (max-width:640px){
@@ -359,43 +355,45 @@ body{
     grid-template-columns:repeat(4,1fr); gap:2px; padding:3px 3px;
     font-size:0.6rem; position:sticky; top:0; z-index:50;
   }
-  .stat{ padding:2px 2px; border-radius:4px; }
-  .stat label{ font-size:0.48rem; letter-spacing:0; }
-  .stat value{ font-size:0.65rem; }
-  #layer-box{ font-size:0.6rem; min-height:unset; padding:2px; grid-column:1/-1; }
-  #age-box{ font-size:0.7rem; min-height:unset; }
-  /* 资产内联 */
-  #asset-inline{ padding:0 8px 6px; }
-  #asset-inline table{ font-size:0.6rem; }
-  #asset-inline th{ padding:2px; }
-  #asset-inline td{ padding:2px; }
-  /* 中区：保持左右并排，极致压缩 */
+  .stat{ padding:3px 3px; border-radius:4px; }
+  .stat label{ font-size:0.52rem; letter-spacing:0; }
+  .stat value{ font-size:0.72rem; }
+  .stat.clickable::after{ font-size:0.9rem; right:4px; }
+  #layer-box{ font-size:0.68rem; min-height:unset; padding:2px; grid-column:1/-1; }
+  #age-box{ font-size:0.78rem; min-height:unset; }
+  /* 明细面板 */
+  #detail-inline{ padding:4px 6px; }
+  #detail-inline table{ font-size:0.62rem; }
+  #detail-inline th{ padding:2px 3px; }
+  #detail-inline td{ padding:2px 3px; }
+  #detail-inline .dl-row{ font-size:0.62rem; }
+  /* 中区：棋盘放大，日志缩窄 */
   #mid-row{ flex-direction:row; gap:4px; align-items:flex-start; }
-  #board-area{ flex:0 0 auto; max-width:160px; padding:0; margin:0; }
-  #board-area > div{ max-width:160px; aspect-ratio:1; }
-  #board-svg{ max-width:155px; }
-  #log{ flex:1; min-width:0; max-height:80px; font-size:0.6rem; padding:4px; border-radius:6px; overflow-y:auto; }
+  #board-area{ flex:0 0 auto; max-width:200px; padding:0; margin:0; }
+  #board-area > div{ max-width:200px; aspect-ratio:1; }
+  #board-svg{ max-width:195px; }
+  #log{ flex:1; min-width:0; max-height:90px; font-size:0.64rem; padding:4px; border-radius:6px; overflow-y:auto; }
   #log .entry{ margin-bottom:2px; padding-bottom:2px; }
   /* 日志折叠按钮 */
-  #log-toggle-btn{ font-size:0.55rem; padding:1px 4px; }
+  #log-toggle-btn{ font-size:0.58rem; padding:1px 4px; }
   /* 游戏主内容 */
   #game-main{ padding:4px 4px; max-width:100%; gap:4px; }
   /* 卡牌区 */
-  #card-stage{ height:160px; }
-  .card-face{ padding:8px; border-radius:12px; }
-  .card-name{ font-size:0.95rem; margin-bottom:2px; }
-  .card-desc{ font-size:0.75rem; line-height:1.35; }
-  .card-type{ font-size:0.6rem; margin-bottom:2px; }
+  #card-stage{ height:165px; }
+  .card-face{ padding:9px; border-radius:12px; }
+  .card-name{ font-size:1rem; margin-bottom:2px; }
+  .card-desc{ font-size:0.8rem; line-height:1.4; }
+  .card-type{ font-size:0.62rem; margin-bottom:2px; }
   /* 按钮 */
-  .card-options{ gap:4px; }
+  .card-options{ gap:5px; }
   .card-options button, #draw-btn, #rest-btn, #loan-btn, #repay-btn{
-    padding:8px 10px; font-size:0.78rem; border-radius:8px;
+    padding:9px 10px; font-size:0.82rem; border-radius:8px;
   }
   #draw-btn{ max-width:100%; }
   #action-bar{ max-width:100%; gap:4px; }
-  .direction-btn{ padding:8px 10px; font-size:0.78rem; }
-  .direction-title{ font-size:0.85rem; margin-bottom:2px; }
-  .direction-cost{ font-size:0.68rem; }
+  .direction-btn{ padding:9px 10px; font-size:0.82rem; }
+  .direction-title{ font-size:0.9rem; margin-bottom:2px; }
+  .direction-cost{ font-size:0.72rem; }
   /* 弹出面板 */
   #loan-panel, #repay-panel, #finance-panel, #market-panel{
     max-width:96vw !important; max-height:85vh; padding:10px;
@@ -435,22 +433,26 @@ body{
 /* 极小屏：连160px板子都放不下的设备 */
 @media (max-width:380px){
   #top-bar{ gap:1px; padding:2px 2px; }
-  .stat{ padding:1px 2px; border-radius:3px; }
-  .stat label{ font-size:0.44rem; }
-  .stat value{ font-size:0.62rem; }
-  #layer-box{ font-size:0.6rem; grid-column:1/-1; }
-  #age-box{ font-size:0.7rem; }
-  #card-stage{ height:140px; }
+  .stat{ padding:2px 2px; border-radius:3px; }
+  .stat label{ font-size:0.46rem; }
+  .stat value{ font-size:0.65rem; }
+  .stat.clickable::after{ font-size:0.8rem; right:3px; }
+  #layer-box{ font-size:0.62rem; grid-column:1/-1; }
+  #age-box{ font-size:0.72rem; }
+  #card-stage{ height:145px; }
   .card-face{ padding:6px; }
-  .card-name{ font-size:0.85rem; }
-  .card-desc{ font-size:0.7rem; line-height:1.3; }
-  .card-options button{ padding:6px 8px; font-size:0.72rem; }
-  #board-area{ max-width:140px; }
-  #board-svg{ max-width:135px; }
-  #board-area > div{ max-width:140px; }
-  #log{ max-height:60px; font-size:0.55rem; padding:3px; }
+  .card-name{ font-size:0.9rem; }
+  .card-desc{ font-size:0.74rem; line-height:1.3; }
+  .card-options button{ padding:7px 8px; font-size:0.76rem; }
+  #board-area{ max-width:170px; }
+  #board-svg{ max-width:165px; }
+  #board-area > div{ max-width:170px; }
+  #log{ max-height:70px; font-size:0.58rem; padding:3px; }
   #game-main{ padding:2px 2px; gap:2px; }
-  #draw-btn, #rest-btn, #loan-btn, #repay-btn{ padding:6px 8px; font-size:0.72rem; }
+  #draw-btn, #rest-btn, #loan-btn, #repay-btn{ padding:7px 8px; font-size:0.76rem; }
+  #detail-inline{ padding:3px 4px; }
+  #detail-inline table{ font-size:0.58rem; }
+  #detail-inline .dl-row{ font-size:0.58rem; }
 }
 #music-btn{
   position:fixed; top:12px; right:12px; z-index:300;
@@ -518,24 +520,21 @@ body{
 <!-- GAME PAGE -->
 <div id="game-page" class="page hidden">
   <div id="top-bar">
-    <div class="stat" onmouseenter="showCashTooltip()" onmouseleave="hideCashTooltip()">
+    <div class="stat clickable" id="stat-cash" onclick="toggleDetail('cash')">
       <label>现金</label>
       <value id="s-cash">0</value>
-      <div id="cash-tooltip" onmouseenter="showCashTooltip()" onmouseleave="hideCashTooltip()"></div>
     </div>
-    <div class="stat clickable" id="stat-assets" onclick="toggleAssetInline()"><label>资产</label><value id="s-assets">0</value></div>
-    <div class="stat"><label>负债</label><value id="s-debt">0</value></div>
-    <div class="stat"><label>被动/月</label><value id="s-passive">0</value></div>
-    <div class="stat"><label>支出/月</label><value id="s-expense">0</value></div>
+    <div class="stat clickable" id="stat-assets" onclick="toggleDetail('assets')"><label>资产</label><value id="s-assets">0</value></div>
+    <div class="stat clickable" id="stat-debt" onclick="toggleDetail('debt')"><label>负债</label><value id="s-debt">0</value></div>
+    <div class="stat clickable" id="stat-passive" onclick="toggleDetail('passive')"><label>被动/月</label><value id="s-passive">0</value></div>
+    <div class="stat clickable" id="stat-expense" onclick="toggleDetail('expense')"><label>支出/月</label><value id="s-expense">0</value></div>
     <div class="stat progress-stat"><label>出圈进度</label><value id="s-progress">0%</value></div>
     <div class="stat"><label>精力</label><value id="s-energy">0</value></div>
     <div id="age-box"><span id="s-age">22</span>岁</div>
     <div id="layer-box" style="display:none;">平流</div>
   </div>
-  <button id="asset-toggle-btn" onclick="toggleAssetInline()" style="display:none;">资产明细 ▸</button>
-  <div id="asset-inline">
-    <table id="asset-inline-table"><thead><tr><th>资产</th><th>类型</th><th>买入价</th><th>市值</th><th>月被动</th></tr></thead><tbody></tbody></table>
-    <div id="asset-inline-empty" class="empty" style="display:none;">暂无资产</div>
+  <div id="detail-inline">
+    <div id="detail-inline-content"></div>
   </div>
   <div id="mid-row">
     <div id="board-area">
@@ -7099,63 +7098,150 @@ function confirmFinanceBuy() {
 }
 
 // =====================================================
-// 资产面板
+// 明细面板（统一：现金/资产/负债/被动/支出）
 // =====================================================
-function toggleAssetPanel() {
-  const body = document.getElementById('asset-body');
-  const icon = document.getElementById('asset-toggle-icon');
-  body.classList.toggle('open');
-  icon.textContent = body.classList.contains('open') ? '▾' : '▸';
+let _detailType = null;
+
+function toggleDetail(type) {
+  const panel = document.getElementById('detail-inline');
+  const content = document.getElementById('detail-inline-content');
+  // 点击同一个 → 关闭
+  if (_detailType === type && panel.classList.contains('open')) {
+    panel.classList.remove('open');
+    _detailType = null;
+    clearDetailStats();
+    return;
+  }
+  // 切换内容
+  _detailType = type;
+  clearDetailStats();
+  // 高亮当前stat
+  const statEl = document.getElementById('stat-' + type);
+  if (statEl) statEl.classList.add('open');
+  // 填充内容
+  content.innerHTML = buildDetailContent(type);
+  panel.classList.add('open');
 }
-function toggleAssetInline() {
-  const inline = document.getElementById('asset-inline');
-  const stat = document.getElementById('stat-assets');
-  const btn = document.getElementById('asset-toggle-btn');
-  inline.classList.toggle('open');
-  if (stat) stat.classList.toggle('open', inline.classList.contains('open'));
-  if (btn) btn.textContent = inline.classList.contains('open') ? '资产明细 ▾' : '资产明细 ▸';
+
+function clearDetailStats() {
+  document.querySelectorAll('.stat.clickable').forEach(el => el.classList.remove('open'));
 }
+
+function buildDetailContent(type) {
+  if (!state) return '';
+  switch (type) {
+    case 'cash': return buildCashDetail();
+    case 'assets': return buildAssetDetail();
+    case 'debt': return buildDebtDetail();
+    case 'passive': return buildPassiveDetail();
+    case 'expense': return buildExpenseDetail();
+    default: return '';
+  }
+}
+
+function buildCashDetail() {
+  let html = '<table><thead><tr><th>时间</th><th>变动</th><th>原因</th></tr></thead><tbody>';
+  if (!state.cashLog || !state.cashLog.length) {
+    html += '<tr><td colspan="3" class="empty">暂无现金变动记录</td></tr>';
+  } else {
+    for (const item of state.cashLog.slice(0, 6)) {
+      const sign = item.amount >= 0 ? '+' : '';
+      html += '<tr><td>' + item.age + '岁</td><td style="color:' + (item.amount >= 0 ? 'var(--green)' : 'var(--red)') + '">' + sign + item.amount.toFixed(1) + '万</td><td>' + escapeHtml(item.reason) + '</td></tr>';
+    }
+  }
+  html += '</tbody></table>';
+  html += '<div class="dl-row dl-total"><span class="dl-label">当前现金</span><span class="dl-value">' + fmtMoney(state.cash) + '</span></div>';
+  return html;
+}
+
+function buildAssetDetail() {
+  let html = '<table><thead><tr><th>资产</th><th>类型</th><th>市值</th><th>月被动</th></tr></thead><tbody>';
+  if (!state.assets.length) {
+    html += '<tr><td colspan="4" class="empty">暂无资产</td></tr>';
+  } else {
+    for (const a of state.assets) {
+      html += '<tr><td>' + escapeHtml(a.name) + '</td><td>' + typeLabel(a.type) + '</td><td>' + fmtMoney(a.marketValue * a.quantity) + '</td><td>' + fmtMoney(a.passiveIncome * a.quantity) + '</td></tr>';
+    }
+  }
+  html += '</tbody></table>';
+  const totalMv = state.assets.reduce((s, a) => s + a.marketValue * a.quantity, 0);
+  const totalPi = passiveIncome();
+  html += '<div class="dl-row dl-total"><span class="dl-label">总市值 / 总被动</span><span class="dl-value">' + fmtMoney(totalMv) + ' / ' + fmtMoney(totalPi) + '/月</span></div>';
+  return html;
+}
+
+function buildDebtDetail() {
+  let html = '<table><thead><tr><th>债务</th><th>金额</th><th>月息</th></tr></thead><tbody>';
+  if (!state.loans || !state.loans.length) {
+    html += '<tr><td colspan="3" class="empty">暂无负债</td></tr>';
+  } else {
+    for (let i = 0; i < state.loans.length; i++) {
+      const l = state.loans[i];
+      html += '<tr><td>银行贷款 #' + (i + 1) + '</td><td>' + fmtMoney(l.amount) + '</td><td>' + fmtMoney(round(l.amount * (l.interest || 0.005))) + '</td></tr>';
+    }
+  }
+  html += '</tbody></table>';
+  html += '<div class="dl-row dl-total"><span class="dl-label">总负债 / 月息</span><span class="dl-value">' + fmtMoney(totalDebt()) + ' / ' + fmtMoney(loanInterest()) + '/月</span></div>';
+  return html;
+}
+
+function buildPassiveDetail() {
+  let html = '<table><thead><tr><th>来源</th><th>月被动收入</th></tr></thead><tbody>';
+  if (!state.assets.length) {
+    html += '<tr><td colspan="2" class="empty">暂无被动收入来源</td></tr>';
+  } else {
+    for (const a of state.assets) {
+      const pi = a.passiveIncome * a.quantity;
+      if (pi > 0) {
+        html += '<tr><td>' + escapeHtml(a.name) + '</td><td>' + fmtMoney(pi) + '</td></tr>';
+      }
+    }
+  }
+  html += '</tbody></table>';
+  html += '<div class="dl-row dl-total"><span class="dl-label">被动收入合计</span><span class="dl-value">' + fmtMoney(passiveIncome()) + '/月</span></div>';
+  return html;
+}
+
+function buildExpenseDetail() {
+  const base = state.baseExpense;
+  const spouse = spouseExpense();
+  const children = childrenExpense();
+  const interest = loanInterest();
+  const total = monthlyExpense();
+  let html = '';
+  html += '<div class="dl-row"><span class="dl-label">基础生活支出</span><span class="dl-value">' + fmtMoney(base) + '</span></div>';
+  if (spouse > 0) html += '<div class="dl-row"><span class="dl-label">配偶支出</span><span class="dl-value">' + fmtMoney(spouse) + '</span></div>';
+  if (children > 0) html += '<div class="dl-row"><span class="dl-label">子女支出（' + state.children + '人）</span><span class="dl-value">' + fmtMoney(children) + '</span></div>';
+  if (interest > 0) html += '<div class="dl-row"><span class="dl-label">贷款月息</span><span class="dl-value">' + fmtMoney(interest) + '</span></div>';
+  html += '<div class="dl-row dl-total"><span class="dl-label">月支出合计</span><span class="dl-value">' + fmtMoney(total) + '</span></div>';
+  return html;
+}
+
+// 旧函数兼容（保留但不再使用面板）
+function toggleAssetInline() { toggleDetail('assets'); }
 function toggleLog() {
   const log = document.getElementById('log');
   const btn = document.getElementById('log-toggle-btn');
   log.classList.toggle('collapsed');
   btn.textContent = log.classList.contains('collapsed') ? '展开日志' : '收起日志';
 }
+function toggleAssetPanel() {
+  const body = document.getElementById('asset-body');
+  const icon = document.getElementById('asset-toggle-icon');
+  if (body) body.classList.toggle('open');
+  if (icon) icon.textContent = (body && body.classList.contains('open')) ? '▾' : '▸';
+}
 function renderAssetPanel() {
   // 旧表（保留兼容）
   const tbody = document.querySelector('#asset-table tbody');
   if (tbody) {
     tbody.innerHTML = '';
-  }
-  const empty = document.getElementById('asset-empty');
-  if (empty) {
-    empty.classList.toggle('hidden', state.assets.length > 0);
-  }
-  if (tbody && state.assets.length) {
-    for (const a of state.assets) {
-      const tr = document.createElement('tr');
-      tr.dataset.type = a.type;
-      tr.innerHTML = '<td>' + escapeHtml(a.name) + '</td><td>' + typeLabel(a.type) + '</td><td>' + fmtMoney(a.cost * a.quantity) + '</td><td>' + fmtMoney(a.marketValue * a.quantity) + '</td><td>' + fmtMoney(a.passiveIncome * a.quantity) + '</td>';
-      tbody.appendChild(tr);
-    }
-  }
-  // 新内联资产表
-  const itbody = document.querySelector('#asset-inline-table tbody');
-  const iempty = document.getElementById('asset-inline-empty');
-  const abtn = document.getElementById('asset-toggle-btn');
-  if (itbody) {
-    itbody.innerHTML = '';
-    if (!state.assets.length) {
-      iempty.style.display = 'block';
-      abtn.classList.remove('show');
-    } else {
-      iempty.style.display = 'none';
-      abtn.classList.add('show');
+    if (state.assets.length) {
       for (const a of state.assets) {
         const tr = document.createElement('tr');
         tr.dataset.type = a.type;
         tr.innerHTML = '<td>' + escapeHtml(a.name) + '</td><td>' + typeLabel(a.type) + '</td><td>' + fmtMoney(a.cost * a.quantity) + '</td><td>' + fmtMoney(a.marketValue * a.quantity) + '</td><td>' + fmtMoney(a.passiveIncome * a.quantity) + '</td>';
-        itbody.appendChild(tr);
+        tbody.appendChild(tr);
       }
     }
   }
