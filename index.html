@@ -109,6 +109,14 @@ body{
 }
 #cash-tooltip .empty{ color:var(--muted); }
 #s-cash{ cursor:help; }
+/* 可点击的状态格（资产） */
+.stat.clickable{ cursor:pointer; }
+.stat.clickable:hover{ border-color:var(--gold); }
+.stat.clickable label{ display:flex; align-items:center; gap:2px; }
+.stat.clickable label::after{
+  content:'▸'; font-size:0.5rem; transition:transform 0.2s;
+}
+.stat.clickable.open label::after{ content:'▾'; }
 
 #game-main{ display:flex; flex-direction:column; align-items:center; padding:16px 16px 24px; width:100%; max-width:640px; margin:0 auto; gap:12px; }
 
@@ -342,19 +350,21 @@ body{
 }
 /* ===== 手机端适配 ===== */
 @media (max-width:640px){
-  /* 顶部状态栏：3列 */
+  /* 顶部状态栏：4列 */
   #top-bar{
-    grid-template-columns:repeat(3,1fr); gap:2px; padding:3px 3px;
+    grid-template-columns:repeat(4,1fr); gap:2px; padding:3px 3px;
     font-size:0.6rem; position:sticky; top:0; z-index:50;
   }
-  .stat{ padding:2px 3px; border-radius:4px; }
-  .stat label{ font-size:0.5rem; letter-spacing:0; }
-  .stat value{ font-size:0.7rem; }
-  #layer-box{ font-size:0.7rem; min-height:unset; padding:2px; }
-  #age-box{ font-size:0.8rem; min-height:unset; }
+  .stat{ padding:2px 2px; border-radius:4px; }
+  .stat label{ font-size:0.48rem; letter-spacing:0; }
+  .stat value{ font-size:0.65rem; }
+  #layer-box{ font-size:0.6rem; min-height:unset; padding:2px; grid-column:1/-1; }
+  #age-box{ font-size:0.7rem; min-height:unset; }
   /* 资产内联 */
-  #asset-toggle-btn{ font-size:0.6rem; padding:2px 0; }
+  #asset-inline{ padding:0 8px 6px; }
   #asset-inline table{ font-size:0.6rem; }
+  #asset-inline th{ padding:2px; }
+  #asset-inline td{ padding:2px; }
   /* 中区：保持左右并排，极致压缩 */
   #mid-row{ flex-direction:row; gap:4px; align-items:flex-start; }
   #board-area{ flex:0 0 auto; max-width:160px; padding:0; margin:0; }
@@ -424,7 +434,7 @@ body{
   .stat{ padding:1px 2px; border-radius:3px; }
   .stat label{ font-size:0.44rem; }
   .stat value{ font-size:0.62rem; }
-  #layer-box{ font-size:0.6rem; }
+  #layer-box{ font-size:0.6rem; grid-column:1/-1; }
   #age-box{ font-size:0.7rem; }
   #card-stage{ height:140px; }
   .card-face{ padding:6px; }
@@ -509,7 +519,7 @@ body{
       <value id="s-cash">0</value>
       <div id="cash-tooltip" onmouseenter="showCashTooltip()" onmouseleave="hideCashTooltip()"></div>
     </div>
-    <div class="stat"><label>资产</label><value id="s-assets">0</value></div>
+    <div class="stat clickable" id="stat-assets" onclick="toggleAssetInline()"><label>资产 ▾</label><value id="s-assets">0</value></div>
     <div class="stat"><label>负债</label><value id="s-debt">0</value></div>
     <div class="stat"><label>被动/月</label><value id="s-passive">0</value></div>
     <div class="stat"><label>支出/月</label><value id="s-expense">0</value></div>
@@ -518,7 +528,7 @@ body{
     <div id="age-box"><span id="s-age">22</span>岁</div>
     <div id="layer-box" style="display:none;">平流</div>
   </div>
-  <button id="asset-toggle-btn" onclick="toggleAssetInline()">资产明细 ▸</button>
+  <button id="asset-toggle-btn" onclick="toggleAssetInline()" style="display:none;">资产明细 ▸</button>
   <div id="asset-inline">
     <table id="asset-inline-table"><thead><tr><th>资产</th><th>类型</th><th>买入价</th><th>市值</th><th>月被动</th></tr></thead><tbody></tbody></table>
     <div id="asset-inline-empty" class="empty" style="display:none;">暂无资产</div>
@@ -7095,9 +7105,11 @@ function toggleAssetPanel() {
 }
 function toggleAssetInline() {
   const inline = document.getElementById('asset-inline');
+  const stat = document.getElementById('stat-assets');
   const btn = document.getElementById('asset-toggle-btn');
   inline.classList.toggle('open');
-  btn.textContent = inline.classList.contains('open') ? '资产明细 ▾' : '资产明细 ▸';
+  if (stat) stat.classList.toggle('open', inline.classList.contains('open'));
+  if (btn) btn.textContent = inline.classList.contains('open') ? '资产明细 ▾' : '资产明细 ▸';
 }
 function toggleLog() {
   const log = document.getElementById('log');
