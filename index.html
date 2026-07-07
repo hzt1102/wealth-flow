@@ -4795,7 +4795,7 @@ const DATA = {
         {
           "label": "A",
           "text": "承担损失",
-          "costDesc": "现金-300万（被动>支出则仍留顺流）",
+          "costDesc": "现金-300万",
           "effect": {
             "cash": -300
           }
@@ -4961,7 +4961,7 @@ const DATA = {
         {
           "label": "C",
           "text": "认罚",
-          "costDesc": "现金-150万（被动>支出则仍留顺流）",
+          "costDesc": "现金-150万",
           "effect": {
             "cash": -150
           }
@@ -7558,7 +7558,36 @@ const DEFAULT_BGM = 'bgm.mp4';
 })();
 
 function playDefaultBGM() {
-  const a = new Audio(DEFAULT_BGM);
+  stopMusic();
+  // 检测是否有之前的 localStorage 缓存
+  const cached = localStorage.getItem('bgm_data');
+  if (cached) {
+    try {
+      const arr = cached.split(',');
+      const mime = arr[0].match(/:(.*?);/)[1];
+      const bytes = Uint8Array.from(atob(arr[1]), c => c.charCodeAt(0));
+      const blob = new Blob([bytes], { type: mime });
+      const url = URL.createObjectURL(blob);
+      startBGMAudio(url);
+      return;
+    } catch(e) {}
+  }
+  // 从网络加载完整文件再播放（解决MP4流式播放中断问题）
+  fetch(DEFAULT_BGM).then(r => r.blob()).then(blob => {
+    const url = URL.createObjectURL(blob);
+    startBGMAudio(url);
+    // 缓存到 localStoragle
+    const reader = new FileReader();
+    reader.onload = () => {
+      try { localStorage.setItem('bgm_data', reader.result); localStorage.setItem('bgm_name', 'bgm.mp4'); } catch(e) {}
+    };
+    reader.readAsDataURL(blob);
+  }).catch(() => {});
+}
+
+function startBGMAudio(url) {
+  stopMusic();
+  const a = new Audio(url);
   a.loop = true;
   a.volume = 0.3;
   a.play().catch(() => {});
@@ -7568,14 +7597,6 @@ function playDefaultBGM() {
   const btn = document.getElementById('music-btn');
   btn.classList.add('on');
   btn.textContent = '♬';
-  // 缓存到浏览器
-  fetch(DEFAULT_BGM).then(r => r.blob()).then(blob => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      try { localStorage.setItem('bgm_data', reader.result); localStorage.setItem('bgm_name', 'bgm.mp4'); } catch(e) {}
-    };
-    reader.readAsDataURL(blob);
-  }).catch(() => {});
 }
 
 function toggleMusic() {
