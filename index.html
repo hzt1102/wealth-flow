@@ -7543,7 +7543,7 @@ function playFileAudio(file, doStore) {
 // 默认背景音乐文件
 const DEFAULT_BGM = 'bgm.mp4';
 
-// 页面加载时检查是否有缓存音乐
+// 页面加载时仅校验缓存，不自动播放（浏览器会拦截自动播放）
 (function loadStoredBGM() {
   const data = localStorage.getItem('bgm_data');
   if (!data) return;
@@ -7552,8 +7552,7 @@ const DEFAULT_BGM = 'bgm.mp4';
     const mime = arr[0].match(/:(.*?);/)[1];
     const bytes = Uint8Array.from(atob(arr[1]), c => c.charCodeAt(0));
     const blob = new Blob([bytes], { type: mime });
-    const file = new File([blob], localStorage.getItem('bgm_name') || 'bgm.mp3', { type: mime });
-    playFileAudio(file, false);
+    URL.createObjectURL(blob); // 仅验证 blob 是否有效
   } catch(e) { localStorage.removeItem('bgm_data'); localStorage.removeItem('bgm_name'); }
 })();
 
@@ -7679,16 +7678,16 @@ function playDiceSound() {
   });
 }
 
-// 首次用户交互激活音频上下文（供按钮音效使用）
+// 首次用户交互激活音频上下文，并自动播放背景音乐
 document.addEventListener('click', function initAudio(e) {
   if (audioReady) return;
   audioReady = true;
   ensureAudio();
-  // 首次点击自动播放默认BGM
-  if (!musicOn && !localStorage.getItem('bgm_data')) {
+  // 首次点击自动播放默认BGM（若有缓存则优先播放缓存）
+  if (!musicOn) {
     playDefaultBGM();
   }
-}, { once: false });
+}, { once: true });
 </script>
 </body>
 </html>
