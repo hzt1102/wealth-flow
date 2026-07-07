@@ -85,8 +85,12 @@ body{
 #asset-toggle-btn.show{ display:block; }
 #asset-inline{
   display:none; padding:0 16px 10px; max-width:640px; margin:0 auto; width:100%;
+  position:relative; z-index:49; background:var(--bg);
+  border-bottom:1px solid var(--gold);
 }
 #asset-inline.open{ display:block; }
+/* 移动端：触点最小值 */
+.stat.clickable{ min-height:28px; -webkit-tap-highlight-color:transparent; }
 #asset-inline table{ width:100%; border-collapse:collapse; font-size:0.78rem; }
 #asset-inline th{ color:var(--muted); text-align:left; padding:4px; border-bottom:1px solid var(--border); font-weight:500; }
 #asset-inline td{ color:var(--white); padding:4px; border-bottom:1px solid rgba(42,42,53,0.4); }
@@ -519,7 +523,7 @@ body{
       <value id="s-cash">0</value>
       <div id="cash-tooltip" onmouseenter="showCashTooltip()" onmouseleave="hideCashTooltip()"></div>
     </div>
-    <div class="stat clickable" id="stat-assets" onclick="toggleAssetInline()"><label>资产 ▾</label><value id="s-assets">0</value></div>
+    <div class="stat clickable" id="stat-assets" onclick="toggleAssetInline()"><label>资产</label><value id="s-assets">0</value></div>
     <div class="stat"><label>负债</label><value id="s-debt">0</value></div>
     <div class="stat"><label>被动/月</label><value id="s-passive">0</value></div>
     <div class="stat"><label>支出/月</label><value id="s-expense">0</value></div>
