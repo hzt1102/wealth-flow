@@ -345,114 +345,117 @@ body{
 @media (max-width:480px){
   #start-page h1{ font-size:2rem; }
   #card-stage{ height:250px; }
-  .card-name{ font-size:1.3rem; }
-  .card-desc{ font-size:1rem; }
+  .card-name{ font-size:1.4rem; }
+  .card-desc{ font-size:1.1rem; }
 }
 /* ===== 手机端适配 ===== */
 @media (max-width:640px){
-  /* 顶部状态栏：4列 */
+  /* 顶部状态栏：4列，字体放大 */
   #top-bar{
     grid-template-columns:repeat(4,1fr); gap:2px; padding:3px 3px;
-    font-size:0.6rem; position:sticky; top:0; z-index:50;
+    font-size:0.65rem; position:sticky; top:0; z-index:50;
   }
-  .stat{ padding:3px 3px; border-radius:4px; }
-  .stat label{ font-size:0.52rem; letter-spacing:0; }
-  .stat value{ font-size:0.72rem; }
-  .stat.clickable::after{ font-size:0.9rem; right:4px; }
-  #layer-box{ font-size:0.68rem; min-height:unset; padding:2px; grid-column:1/-1; }
-  #age-box{ font-size:0.78rem; min-height:unset; }
+  .stat{ padding:4px 4px; border-radius:5px; }
+  .stat label{ font-size:0.64rem; letter-spacing:0; }
+  .stat value{ font-size:0.88rem; }
+  .stat.clickable::after{ font-size:1.05rem; right:5px; }
+  #layer-box{ font-size:0.82rem; min-height:unset; padding:3px; grid-column:1/-1; }
+  #age-box{ font-size:0.95rem; min-height:unset; }
   /* 明细面板 */
-  #detail-inline{ padding:4px 6px; }
-  #detail-inline table{ font-size:0.62rem; }
-  #detail-inline th{ padding:2px 3px; }
-  #detail-inline td{ padding:2px 3px; }
-  #detail-inline .dl-row{ font-size:0.62rem; }
+  #detail-inline{ padding:5px 8px; }
+  #detail-inline table{ font-size:0.7rem; }
+  #detail-inline th{ padding:3px 4px; }
+  #detail-inline td{ padding:3px 4px; }
+  #detail-inline .dl-row{ font-size:0.7rem; }
+  #detail-inline .empty{ font-size:0.7rem; }
   /* 中区：棋盘放大，日志缩窄 */
   #mid-row{ flex-direction:row; gap:4px; align-items:flex-start; }
   #board-area{ flex:0 0 auto; max-width:200px; padding:0; margin:0; }
   #board-area > div{ max-width:200px; aspect-ratio:1; }
   #board-svg{ max-width:195px; }
-  #log{ flex:1; min-width:0; max-height:90px; font-size:0.64rem; padding:4px; border-radius:6px; overflow-y:auto; }
-  #log .entry{ margin-bottom:2px; padding-bottom:2px; }
+  #log{ flex:1; min-width:0; max-height:90px; font-size:0.74rem; padding:5px; border-radius:6px; overflow-y:auto; }
+  #log .entry{ margin-bottom:3px; padding-bottom:3px; }
   /* 日志折叠按钮 */
-  #log-toggle-btn{ font-size:0.58rem; padding:1px 4px; }
+  #log-toggle-btn{ font-size:0.68rem; padding:2px 4px; }
+  /* 棋盘标签放大 */
+  .board-label{ font-size:22px; }
   /* 游戏主内容 */
-  #game-main{ padding:4px 4px; max-width:100%; gap:4px; }
+  #game-main{ padding:5px 5px; max-width:100%; gap:5px; }
   /* 卡牌区 */
-  #card-stage{ height:165px; }
-  .card-face{ padding:9px; border-radius:12px; }
-  .card-name{ font-size:1rem; margin-bottom:2px; }
-  .card-desc{ font-size:0.8rem; line-height:1.4; }
-  .card-type{ font-size:0.62rem; margin-bottom:2px; }
+  #card-stage{ height:170px; }
+  .card-face{ padding:10px; border-radius:12px; }
+  .card-name{ font-size:1.22rem; margin-bottom:3px; }
+  .card-desc{ font-size:0.95rem; line-height:1.45; }
+  .card-type{ font-size:0.72rem; margin-bottom:3px; }
   /* 按钮 */
   .card-options{ gap:5px; }
   .card-options button, #draw-btn, #rest-btn, #loan-btn, #repay-btn{
-    padding:9px 10px; font-size:0.82rem; border-radius:8px;
+    padding:10px 12px; font-size:0.98rem; border-radius:8px;
   }
   #draw-btn{ max-width:100%; }
-  #action-bar{ max-width:100%; gap:4px; }
-  .direction-btn{ padding:9px 10px; font-size:0.82rem; }
-  .direction-title{ font-size:0.9rem; margin-bottom:2px; }
-  .direction-cost{ font-size:0.72rem; }
+  #action-bar{ max-width:100%; gap:5px; }
+  .direction-btn{ padding:10px 12px; font-size:0.98rem; }
+  .direction-title{ font-size:1.08rem; margin-bottom:3px; }
+  .direction-cost{ font-size:0.8rem; }
   /* 弹出面板 */
   #loan-panel, #repay-panel, #finance-panel, #market-panel{
-    max-width:96vw !important; max-height:85vh; padding:10px;
-    font-size:0.8rem;
+    max-width:96vw !important; max-height:85vh; padding:12px;
+    font-size:0.88rem;
   }
   #loan-panel input, #repay-panel input, #finance-panel input{
-    font-size:0.8rem; padding:6px;
+    font-size:0.88rem; padding:8px;
   }
-  .panel-box{ max-width:96vw; padding:12px; }
-  .panel-box h3{ font-size:1rem; margin-bottom:8px; }
+  .panel-box{ max-width:96vw; padding:14px; }
+  .panel-box h3{ font-size:1.1rem; margin-bottom:10px; }
   /* 其他 */
-  #card-preview{ max-width:90vw; padding:8px; font-size:0.8rem; }
-  #stage-overlay{ padding:16px; }
-  #stage-overlay h2{ font-size:1.2rem; }
-  #stage-overlay p{ font-size:0.85rem; }
-  #energy-warning{ font-size:0.72rem; padding:4px 8px; border-radius:6px; }
+  #card-preview{ max-width:90vw; padding:10px; font-size:0.88rem; }
+  #stage-overlay{ padding:18px; }
+  #stage-overlay h2{ font-size:1.4rem; }
+  #stage-overlay p{ font-size:0.95rem; }
+  #energy-warning{ font-size:0.8rem; padding:6px 10px; border-radius:6px; }
   /* 结果页 */
-  #result-page{ padding:8px; }
-  #result-page h2{ font-size:1.3rem; }
-  #result-stats{ gap:6px; font-size:0.8rem; }
+  #result-page{ padding:10px; }
+  #result-page h2{ font-size:1.5rem; }
+  #result-stats{ gap:8px; font-size:0.88rem; }
   #share-card{ max-width:280px; }
   #share-card .share-title{ font-size:1.1rem; }
   #share-card .share-index{ font-size:2rem; }
   #share-card .share-line{ font-size:0.85rem; }
-  #restart-btn{ padding:10px 28px; font-size:0.9rem; }
+  #restart-btn{ padding:12px 32px; font-size:1rem; }
   .origin-grid{ grid-template-columns:1fr; gap:10px; }
   .origin-card{ padding:16px; }
-  .origin-card h3{ font-size:1rem; }
-  .origin-card p{ font-size:0.82rem; }
-  #origin-page h2{ font-size:1.3rem; }
-  #exit-btn{ font-size:1rem; padding:4px 8px; }
-  #cash-tooltip{ font-size:0.65rem; padding:4px; }
+  .origin-card h3{ font-size:1.1rem; }
+  .origin-card p{ font-size:0.88rem; }
+  #origin-page h2{ font-size:1.4rem; }
+  #exit-btn{ font-size:1.1rem; padding:5px 10px; }
   /* 骰子 */
-  .dice{ width:32px; height:32px; font-size:1rem; border-radius:6px; }
+  .dice{ width:34px; height:34px; font-size:1.1rem; border-radius:6px; }
   #dice-area{ gap:8px; }
 }
-/* 极小屏：连160px板子都放不下的设备 */
+/* 极小屏 */
 @media (max-width:380px){
   #top-bar{ gap:1px; padding:2px 2px; }
-  .stat{ padding:2px 2px; border-radius:3px; }
-  .stat label{ font-size:0.46rem; }
-  .stat value{ font-size:0.65rem; }
-  .stat.clickable::after{ font-size:0.8rem; right:3px; }
-  #layer-box{ font-size:0.62rem; grid-column:1/-1; }
-  #age-box{ font-size:0.72rem; }
-  #card-stage{ height:145px; }
-  .card-face{ padding:6px; }
-  .card-name{ font-size:0.9rem; }
-  .card-desc{ font-size:0.74rem; line-height:1.3; }
-  .card-options button{ padding:7px 8px; font-size:0.76rem; }
+  .stat{ padding:3px 2px; border-radius:3px; }
+  .stat label{ font-size:0.56rem; }
+  .stat value{ font-size:0.78rem; }
+  .stat.clickable::after{ font-size:0.95rem; right:3px; }
+  #layer-box{ font-size:0.74rem; grid-column:1/-1; }
+  #age-box{ font-size:0.85rem; }
+  #card-stage{ height:150px; }
+  .card-face{ padding:7px; }
+  .card-name{ font-size:1.05rem; }
+  .card-desc{ font-size:0.84rem; line-height:1.35; }
+  .card-options button{ padding:8px 10px; font-size:0.88rem; }
   #board-area{ max-width:170px; }
   #board-svg{ max-width:165px; }
   #board-area > div{ max-width:170px; }
-  #log{ max-height:70px; font-size:0.58rem; padding:3px; }
-  #game-main{ padding:2px 2px; gap:2px; }
-  #draw-btn, #rest-btn, #loan-btn, #repay-btn{ padding:7px 8px; font-size:0.76rem; }
+  #log{ max-height:70px; font-size:0.66rem; padding:3px; }
+  #game-main{ padding:2px 2px; gap:3px; }
+  #draw-btn, #rest-btn, #loan-btn, #repay-btn{ padding:8px 10px; font-size:0.88rem; }
   #detail-inline{ padding:3px 4px; }
-  #detail-inline table{ font-size:0.58rem; }
-  #detail-inline .dl-row{ font-size:0.58rem; }
+  #detail-inline table{ font-size:0.64rem; }
+  #detail-inline .dl-row{ font-size:0.64rem; }
+  .board-label{ font-size:24px; }
 }
 #music-btn{
   position:fixed; top:12px; right:12px; z-index:300;
