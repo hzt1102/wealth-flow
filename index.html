@@ -4790,21 +4790,20 @@ const DATA = {
         22,
         60
       ],
-      "desc": "一项顺流层投资失败，你可能跌回平流层。",
+      "desc": "一项顺流层投资失败，直接损失300万现金。",
       "options": [
         {
           "label": "A",
           "text": "承担损失",
-          "costDesc": "现金-300万，跌回平流层",
+          "costDesc": "现金-300万（被动>支出则仍留顺流）",
           "effect": {
-            "cash": -300,
-            "layer": "normal"
+            "cash": -300
           }
         },
         {
           "label": "B",
           "text": "全部退出",
-          "costDesc": "出售所有可售资产变现，退回平流层",
+          "costDesc": "出售所有资产变现，退回平流层",
           "effect": {
             "sellAllAssets": true,
             "layer": "normal"
