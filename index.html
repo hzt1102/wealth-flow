@@ -7663,6 +7663,10 @@ document.addEventListener('click', function initAudio(e) {
   if (audioReady) return;
   audioReady = true;
   ensureAudio();
+  // 首次点击自动播放默认BGM
+  if (!musicOn && !localStorage.getItem('bgm_data')) {
+    playDefaultBGM();
+  }
 }, { once: false });
 </script>
 </body>
