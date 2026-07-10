@@ -124,7 +124,41 @@ body::after{
 #detail-inline .dl-row .dl-value{ font-weight:600; }
 #detail-inline .dl-total{ font-weight:700; color:var(--gold); border-top:1px solid var(--gold); margin-top:3px; padding-top:3px; }
 .stat{ background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:8px 10px; display:flex; flex-direction:column; position:relative; }
-.stat label{ color:var(--muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:1px; }
+.stat label{ color:var(--muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:1px; display:flex; align-items:center; gap:3px; }
+.stat label::before{
+  content:''; display:inline-block; width:10px; height:10px; flex-shrink:0;
+  opacity:0.55; background:currentColor;
+  -webkit-mask-size:contain; mask-size:contain;
+}
+.stat.clickable label::before{ opacity:0.65; }
+#stat-cash label::before{
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='9' fill='none' stroke='white' stroke-width='2.5'/%3E%3Cline x1='12' y1='6' x2='12' y2='18' stroke='white' stroke-width='2.5'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='9' fill='none' stroke='white' stroke-width='2.5'/%3E%3Cline x1='12' y1='6' x2='12' y2='18' stroke='white' stroke-width='2.5'/%3E%3C/svg%3E");
+}
+#stat-assets label::before{
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='12,2 22,8 12,14 2,8' fill='none' stroke='white' stroke-width='2'/%3E%3Cpolygon points='12,14 22,8 22,17 12,23' fill='none' stroke='white' stroke-width='2'/%3E%3Cpolygon points='12,14 2,8 2,17 12,23' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='12,2 22,8 12,14 2,8' fill='none' stroke='white' stroke-width='2'/%3E%3Cpolygon points='12,14 22,8 22,17 12,23' fill='none' stroke='white' stroke-width='2'/%3E%3Cpolygon points='12,14 2,8 2,17 12,23' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E");
+}
+#stat-debt label::before{
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='9' fill='none' stroke='white' stroke-width='2.5'/%3E%3Ctext x='12' y='16' text-anchor='middle' font-size='12' fill='white'%3E!%3C/text%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='9' fill='none' stroke='white' stroke-width='2.5'/%3E%3Ctext x='12' y='16' text-anchor='middle' font-size='12' fill='white'%3E!%3C/text%3E%3C/svg%3E");
+}
+#stat-passive label::before{
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='3,17 9,11 13,15 21,7' fill='none' stroke='white' stroke-width='2.5'/%3E%3Cpolyline points='16,7 21,7 21,12' fill='none' stroke='white' stroke-width='2.5'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='3,17 9,11 13,15 21,7' fill='none' stroke='white' stroke-width='2.5'/%3E%3Cpolyline points='16,7 21,7 21,12' fill='none' stroke='white' stroke-width='2.5'/%3E%3C/svg%3E");
+}
+#stat-expense label::before{
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='21,7 15,13 11,9 3,17' fill='none' stroke='white' stroke-width='2.5'/%3E%3Cpolyline points='8,17 3,17 3,12' fill='none' stroke='white' stroke-width='2.5'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='21,7 15,13 11,9 3,17' fill='none' stroke='white' stroke-width='2.5'/%3E%3Cpolyline points='8,17 3,17 3,12' fill='none' stroke='white' stroke-width='2.5'/%3E%3C/svg%3E");
+}
+#stat-energy label::before{
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='13,2 3,14 12,14 11,22 21,10 12,10 13,2' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='13,2 3,14 12,14 11,22 21,10 12,10 13,2' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E");
+}
+#stat-progress label::before{
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='8' fill='none' stroke='white' stroke-width='2.5'/%3E%3Ccircle cx='12' cy='12' r='3' fill='none' stroke='white' stroke-width='2.5'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='8' fill='none' stroke='white' stroke-width='2.5'/%3E%3Ccircle cx='12' cy='12' r='3' fill='none' stroke='white' stroke-width='2.5'/%3E%3C/svg%3E");
+}
 .stat value{ font-size:0.95rem; color:var(--white); font-weight:600; }
 .stat value.energy-low{ color:var(--red); }
 .stat value.energy-critical{ color:var(--red); animation:pulseRed 1.5s infinite; }
@@ -251,8 +285,14 @@ body::after{
 .card-options button.end-game-option:hover{ background:var(--red); color:var(--bg); border-color:var(--red); }
 .option-cost{ color:var(--muted); font-size:0.85rem; display:block; margin-top:4px; }
 
-#draw-btn{ text-align:center; border:2px solid var(--gold); color:var(--gold); font-weight:600; max-width:300px; }
-#draw-btn:disabled{ border-color:var(--border); color:var(--muted); }
+#draw-btn{
+  text-align:center; max-width:300px; font-weight:600;
+  background:linear-gradient(135deg, #d4a853 0%, #e8c87a 50%, #b8942e 100%);
+  border:none; color:var(--bg); box-shadow:0 0 20px rgba(212,168,83,0.25);
+  transition:all 0.25s;
+}
+#draw-btn:hover{ filter:brightness(1.1); box-shadow:0 0 30px rgba(212,168,83,0.4); transform:translateY(-1px); }
+#draw-btn:disabled{ background:var(--panel); border:1px solid var(--border); color:var(--muted); box-shadow:none; transform:none; }
 
 #action-bar{ display:flex; gap:10px; width:100%; max-width:300px; }
 
@@ -270,7 +310,11 @@ body::after{
 }
 .board-cell{ cursor:pointer; transition:all 0.2s ease; opacity:0.92; stroke:#0d0d12; stroke-width:2.5; }
 .board-cell:hover{ opacity:1; filter:brightness(1.15); }
-.board-cell.highlight{ opacity:1; filter:brightness(1.5) drop-shadow(0 0 8px rgba(255,255,255,0.3)); stroke:#fff; stroke-width:3; }
+.board-cell.highlight{ opacity:1; stroke:#fff; stroke-width:3.5; animation:pulseCell 2s ease-in-out infinite; }
+@keyframes pulseCell{
+  0%,100%{ filter:brightness(1.4) drop-shadow(0 0 6px rgba(255,255,255,0.4)); }
+  50%{ filter:brightness(1.7) drop-shadow(0 0 14px rgba(255,255,255,0.7)); }
+}
 .board-label{ fill:#f5f5f5; font-size:9px; text-anchor:middle; dominant-baseline:middle; pointer-events:none; font-weight:600; text-shadow:0 1px 2px rgba(0,0,0,0.7); }
 #token{
   position:absolute; width:18px; height:18px; background: radial-gradient(circle at 30% 30%, #fff, #c9a227);
@@ -577,8 +621,8 @@ body::after{
     <div class="stat clickable" id="stat-debt" onclick="toggleDetail('debt')"><label>负债</label><value id="s-debt">0</value></div>
     <div class="stat clickable" id="stat-passive" onclick="toggleDetail('passive')"><label>被动/月</label><value id="s-passive">0</value></div>
     <div class="stat clickable" id="stat-expense" onclick="toggleDetail('expense')"><label>支出/月</label><value id="s-expense">0</value></div>
-    <div class="stat progress-stat"><label>出圈进度</label><value id="s-progress">0%</value></div>
-    <div class="stat"><label>精力</label><value id="s-energy">0</value></div>
+    <div class="stat progress-stat" id="stat-progress"><label>出圈进度</label><value id="s-progress">0%</value></div>
+    <div class="stat" id="stat-energy"><label>精力</label><value id="s-energy">0</value></div>
     <div id="age-box"><span id="s-age">22</span>岁</div>
     <div id="layer-box" style="display:none;">平流</div>
   </div>
@@ -5822,9 +5866,9 @@ const BOARD = [
 ];
 
 const BOARD_COLORS = {
-  start: '#c9a227', opportunity: '#27ae60', side: '#2980b9', finance: '#f39c12',
-  realestate: '#d35400', business: '#16a085', npc: '#c9a227', event: '#c0392b',
-  market: '#8e44ad', awareness: '#7f8c8d', fate: '#9b59b6', reverse: '#c0392b', smooth: '#f1c40f'
+  start: '#f1c40f', opportunity: '#2ecc71', side: '#3498db', finance: '#e67e22',
+  realestate: '#e74c3c', business: '#1abc9c', npc: '#f1c40f', event: '#e74c3c',
+  market: '#9b59b6', awareness: '#95a5a6', fate: '#8e44ad', reverse: '#c0392b', smooth: '#f39c12'
 };
 
 const STAGES = [
@@ -6114,6 +6158,10 @@ function drawBoard() {
   sheen.setAttribute('fy', '25%');
   sheen.innerHTML = '<stop offset="0%" stop-color="#ffffff" stop-opacity="0.20"/><stop offset="55%" stop-color="#000000" stop-opacity="0.08"/><stop offset="100%" stop-color="#000000" stop-opacity="0.48"/>';
   defs.appendChild(sheen);
+  const glow = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
+  glow.setAttribute('id', 'boardGlow');
+  glow.innerHTML = '<feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>';
+  defs.appendChild(glow);
   svg.appendChild(defs);
 
   const bg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -6122,8 +6170,9 @@ function drawBoard() {
   bg.setAttribute('r', 200);
   bg.setAttribute('fill', '#12121a');
   bg.setAttribute('stroke', '#c9a227');
-  bg.setAttribute('stroke-width', '1.5');
-  bg.setAttribute('stroke-opacity', '0.35');
+  bg.setAttribute('stroke-width', '2');
+  bg.setAttribute('stroke-opacity', '0.5');
+  bg.setAttribute('filter', 'url(#boardGlow)');
   svg.appendChild(bg);
 
   const reverseRing = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
