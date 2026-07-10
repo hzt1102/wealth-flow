@@ -60,7 +60,22 @@ body::after{
 #start-page{ text-align:center; }
 #start-page h1{ font-size:2.6rem; margin:0 0 0.15em; color:var(--gold); letter-spacing:2px; }
 #start-page .subtitle{ color:var(--muted); font-size:1rem; margin-bottom:0.3rem; }
-#start-page .hook{ color:var(--white); font-size:1.05rem; margin-bottom:1.6rem; line-height:1.8; }
+#start-page .hook{ color:var(--white); font-size:1.05rem; margin-bottom:0.8rem; line-height:1.8; }
+#start-page .hook-ornament{
+  width:60px; height:1.5px; margin:0 auto 1.4rem;
+  background:linear-gradient(90deg, transparent, var(--gold), transparent);
+  position:relative;
+}
+#start-page .hook-ornament::after{
+  content:''; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
+  width:6px; height:6px; background:var(--gold); border-radius:50%;
+  box-shadow:0 0 8px rgba(212,168,83,0.6);
+  animation:pulseDot 2.5s ease-in-out infinite;
+}
+@keyframes pulseDot{
+  0%,100%{ box-shadow:0 0 8px rgba(212,168,83,0.6); }
+  50%{ box-shadow:0 0 16px rgba(212,168,83,0.9); }
+}
 #start-page .layer-intro{ width:100%; max-width:520px; margin:0 auto 1.8rem; text-align:left; }
 #start-page .layer-row{ font-size:0.88rem; color:var(--muted); padding:8px 12px; border-radius:6px; margin-bottom:6px; line-height:1.6; }
 #start-page .layer-row.highlight-row{ background:rgba(212,168,83,0.08); border:0.5px solid rgba(212,168,83,0.2); }
@@ -208,7 +223,7 @@ body::after{
 
 #card-stage{ width:100%; height:280px; perspective:1200px; position:relative; }
 .card-wrap{
-  width:100%; height:100%; position:absolute; transition:transform 0.6s; transform-style:preserve-3d;
+  width:100%; height:100%; position:absolute; transition:transform 0.7s cubic-bezier(0.34,1.56,0.64,1); transform-style:preserve-3d;
 }
 .card-face{
   position:absolute; width:100%; height:100%; backface-visibility:hidden; border-radius:18px;
@@ -425,7 +440,9 @@ body::after{
 #share-card .share-index{ font-size:2.6rem; font-weight:700; color:var(--white); }
 #share-card .share-line{ color:var(--muted); font-size:0.95rem; padding:0 20px; text-align:center; }
 
-@keyframes fadeIn{ from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:translateY(0);} }
+@keyframes fadeIn{ from{opacity:0; transform:translateY(16px) scale(0.96);} to{opacity:1; transform:translateY(0) scale(1);} }
+@keyframes popIn{ 0%{opacity:0; transform:scale(0.85);} 60%{opacity:1; transform:scale(1.04);} 100%{transform:scale(1);} }
+.panel-box{ animation:popIn 0.35s ease-out both; }
 .fade-in{ animation:fadeIn 0.5s ease both; }
 @keyframes pulseGold{ 0%,100%{ box-shadow:0 0 0 0 rgba(212,168,83,0); } 50%{ box-shadow:0 0 20px 4px rgba(212,168,83,0.25); } }
 .pulse-gold{ animation:pulseGold 2s infinite; }
@@ -554,6 +571,23 @@ body::after{
 }
 #music-btn:hover{ border-color:var(--gold); color:var(--gold); }
 #music-btn.on{ color:var(--gold); border-color:var(--gold); }
+#music-btn .wave{
+  display:none; position:absolute; bottom:-2px; left:50%; transform:translateX(-50%);
+  display:flex; gap:1.5px; align-items:flex-end; height:12px;
+}
+#music-btn.on .wave{ display:flex; }
+.wave-bar{
+  width:2px; background:var(--gold); border-radius:1px;
+  animation:waveBounce 0.8s ease-in-out infinite alternate;
+}
+.wave-bar:nth-child(1){ height:4px; animation-delay:0s; }
+.wave-bar:nth-child(2){ height:8px; animation-delay:0.15s; }
+.wave-bar:nth-child(3){ height:6px; animation-delay:0.3s; }
+.wave-bar:nth-child(4){ height:10px; animation-delay:0.45s; }
+@keyframes waveBounce{
+  0%{ transform:scaleY(0.5); opacity:0.4; }
+  100%{ transform:scaleY(1); opacity:1; }
+}
 #music-menu{
   position:fixed; top:52px; right:12px; z-index:301; display:none;
   background:var(--panel); border:1px solid var(--border); border-radius:8px;
@@ -568,7 +602,7 @@ body::after{
 </style>
 </head>
 <body>
-<button id="music-btn" title="背景音乐" onclick="toggleMusic()">♫</button>
+<button id="music-btn" title="背景音乐" onclick="toggleMusic()">♫<span class="wave"><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span></span></button>
 <div id="music-menu">
   <div onclick="pickMusicFile()">选择本地音乐...</div>
 </div>
@@ -578,6 +612,7 @@ body::after{
   <h1>财富流沙盘</h1>
   <div class="subtitle">22岁，你刚毕业。38年后，你在哪？</div>
   <div class="hook">抽到的不一定是好牌。但怎么打，归你。</div>
+  <div class="hook-ornament"></div>
   <div class="layer-intro">
     <div class="layer-row"><span class="layer-tag reverse-tag">逆流层</span>失业、离婚、生病…诸事不顺，不断消耗金钱和精力</div>
     <div class="layer-row"><span class="layer-tag normal-tag">平流层</span>读书、工作、买房、养娃…大多数人一生的循环</div>
