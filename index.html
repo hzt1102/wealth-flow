@@ -21,9 +21,38 @@
 }
 * { box-sizing:border-box; }
 body{
-  margin:0; padding:0; background:var(--bg); color:var(--white);
+  margin:0; padding:0;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(212,168,83,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 100%, rgba(106,154,236,0.04) 0%, transparent 50%),
+    var(--bg);
+  color:var(--white);
   font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif;
   min-height:100vh; overflow-x:hidden;
+  position:relative;
+}
+/* 背景微噪点纹理 */
+body::before{
+  content:''; position:fixed; top:0; left:0; width:100%; height:100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-size:256px 256px; pointer-events:none; z-index:0;
+}
+/* 金色光点飘浮 */
+body::after{
+  content:''; position:fixed; top:0; left:0; width:100%; height:100%;
+  pointer-events:none; z-index:0;
+  background:
+    radial-gradient(1px 1px at 20% 30%, rgba(212,168,83,0.4), transparent),
+    radial-gradient(1px 1px at 50% 70%, rgba(212,168,83,0.3), transparent),
+    radial-gradient(1.5px 1.5px at 80% 20%, rgba(212,168,83,0.35), transparent),
+    radial-gradient(1px 1px at 15% 80%, rgba(212,168,83,0.25), transparent),
+    radial-gradient(1.5px 1.5px at 60% 40%, rgba(212,168,83,0.3), transparent),
+    radial-gradient(1px 1px at 90% 60%, rgba(212,168,83,0.2), transparent);
+  animation: floatParticles 12s ease-in-out infinite alternate;
+}
+@keyframes floatParticles{
+  0%{ opacity:0.5; transform:translateY(0); }
+  100%{ opacity:1; transform:translateY(-8px); }
 }
 .hidden{ display:none !important; }
 .page{ min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; }
@@ -70,8 +99,10 @@ body{
 #game-page{ align-items:stretch; justify-content:flex-start; padding:0; }
 #top-bar{
   position:sticky; top:0; z-index:50;
-  background:rgba(10,10,15,0.92); backdrop-filter:blur(8px);
-  border-bottom:1px solid var(--border); padding:8px 16px;
+  background:rgba(10,10,15,0.78); backdrop-filter:blur(16px) saturate(1.4);
+  -webkit-backdrop-filter:blur(16px) saturate(1.4);
+  border-bottom:1px solid rgba(212,168,83,0.12);
+  padding:8px 16px;
   display:grid; grid-template-columns:repeat(4,1fr);
   gap:8px; font-size:0.85rem;
 }
@@ -151,12 +182,25 @@ body{
 }
 .card-front{ background:var(--card); }
 .card-back{
-  background:linear-gradient(135deg,#1a1a25 0%,#0f0f16 100%); transform:rotateY(180deg);
+  background:
+    radial-gradient(circle at 30% 30%, rgba(212,168,83,0.08) 0%, transparent 50%),
+    linear-gradient(135deg, #1a1a25 0%, #0f0f16 100%);
+  transform:rotateY(180deg);
   align-items:center; justify-content:center; border:1px solid var(--gold);
+  overflow:hidden;
+}
+.card-back::before{
+  content:''; position:absolute; top:10%; left:10%; width:80%; height:80%;
+  background:
+    repeating-conic-gradient(rgba(212,168,83,0.08) 0% 1%, transparent 1% 5%) 50%,
+    repeating-conic-gradient(transparent 0% 2%, rgba(212,168,83,0.06) 2% 3%) 50%;
+  border-radius:8px;
 }
 .card-back::after{
-  content:""; width:120px; height:120px; border:2px solid var(--gold); border-radius:50%;
-  opacity:0.4; background:radial-gradient(circle, transparent 40%, var(--gold) 41%, transparent 42%);
+  content:''; position:absolute; width:70px; height:70px;
+  border:2px solid rgba(212,168,83,0.5); border-radius:50%;
+  background:radial-gradient(circle, rgba(212,168,83,0.12) 30%, transparent 70%);
+  box-shadow: 0 0 30px rgba(212,168,83,0.15), inset 0 0 15px rgba(212,168,83,0.08);
 }
 .flipped{ transform:rotateY(180deg); }
 
