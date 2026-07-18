@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>弹窗效果预览</title>
+<style>
+:root{
+  --gold:#d4a853;
+}
+*{ box-sizing:border-box; }
+body{ margin:0; background:#333; font-family:"PingFang SC","Microsoft YaHei",sans-serif; padding:20px; }
+.grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; max-width:1000px; margin:0 auto; }
+.sample{
+  position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:20px;
+}
+.sample::before{
+  content:''; position:absolute; inset:0; z-index:-2;
+  background-position:center; background-size:cover;
+}
+.sample::after{
+  content:''; position:absolute; inset:0; z-index:-1;
+  background:linear-gradient(rgba(250,246,238,0.55), rgba(250,246,238,0.68));
+}
+.sample h2{ color:#8a6a1a; font-size:1.8rem; margin:0 0 8px; text-shadow:0 1px 12px rgba(255,255,255,0.8); }
+.sample p{ color:#3a3a42; font-size:0.95rem; max-width:320px; line-height:1.6; margin:0; text-shadow:0 1px 6px rgba(255,255,255,0.7); }
+.sample.reverse h2{ color:#a03a28; }
+.label{ position:absolute; top:8px; left:10px; background:rgba(0,0,0,0.5); color:#fff; font-size:0.7rem; padding:2px 8px; border-radius:4px; z-index:10; }
+</style>
+</head>
+<body>
+<div class="grid" id="grid"></div>
+<script>
+const samples = [
+  { cls:'accumulate', name:'积累期', desc:'主业起步，只能做副业和小额金融投资。', img:'stage-accumulate' },
+  { cls:'expand', name:'扩张期', desc:'贷款和房产、企业投资已解锁。', img:'stage-expand' },
+  { cls:'midlife', name:'中年期', desc:'生活压力增大，逆流事件开始频繁。', img:'stage-midlife' },
+  { cls:'harvest', name:'收割期', desc:'资产变现和顺流层机会增多。', img:'stage-harvest' },
+  { cls:'reverse', name:'跌入逆流层', desc:'你遭遇了重大挫折，逆流将持续3轮。', img:'layer-reverse' },
+  { cls:'smooth', name:'恭喜出圈！', desc:'被动收入已超过月支出，赚钱像呼吸一样简单。', img:'layer-smooth' },
+];
+const grid = document.getElementById('grid');
+for (const s of samples) {
+  const div = document.createElement('div');
+  div.className = 'sample ' + (s.cls === 'reverse' ? 'reverse' : '');
+  div.style.setProperty('--bg', `url(images-v2/${s.img}.webp)`);
+  div.innerHTML = `<span class="label">${s.img}</span><h2>${s.name}</h2><p>${s.desc}</p>`;
+  div.querySelector(':scope');
+  // 用内联样式设置背景图
+  const style = document.createElement('style');
+  style.textContent = `.sample[data-img="${s.img}"]::before{ background-image:url(images-v2/${s.img}.webp); }`;
+  document.head.appendChild(style);
+  div.setAttribute('data-img', s.img);
+  grid.appendChild(div);
+}
+</script>
+</body>
+</html>
