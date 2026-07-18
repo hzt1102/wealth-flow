@@ -467,6 +467,11 @@ body::after{
 #result-freedom-label{ color:var(--muted); margin-bottom:1.5rem; }
 .result-section{ background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:20px; margin:16px 0; max-width:720px; width:100%; text-align:left; }
 .result-section h3{ color:var(--gold); margin:0 0 12px; font-size:1.1rem; }
+/* 人生总结 总分总 */
+.summary-verdict{ font-size:1.2rem; color:var(--gold); font-weight:600; line-height:1.6; margin-bottom:14px; }
+.summary-facts{ margin:0 0 14px; padding-left:20px; }
+.summary-facts li{ color:var(--white); font-size:0.95rem; line-height:1.75; margin-bottom:8px; }
+.summary-closing{ color:var(--gold2); font-size:1rem; line-height:1.6; border-top:1px solid var(--border); padding-top:14px; font-style:italic; }
 .result-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 .result-grid .label{ color:var(--muted); }
 .result-grid .value{ color:var(--white); text-align:right; }
@@ -6122,6 +6127,8 @@ function initState(profKey) {
     restCount: 0,
     unemployed: false,
     achievements: [],
+    smoothEntryAge: null,
+    smoothMonths: 0,
     flags: {},
     cardsSeen: [],
     decisionLog: [],
@@ -6193,7 +6200,9 @@ function monthlyCashflow() {
 function freedomIndex() {
   const exp = monthlyExpense();
   if (exp <= 0) return 0;
-  return round(passiveIncome() / exp * 100);
+  // 顺流层按实际结算口径（被动×100）计算
+  const effectivePassive = passiveIncome() * (state.layer === 'smooth' ? 100 : 1);
+  return round(effectivePassive / exp * 100);
 }
 function layerLabel() {
   return { normal: '平流', reverse: '逆流', smooth: '顺流' }[state.layer];
@@ -6826,6 +6835,7 @@ function advanceTime(monthsParam) {
   if (Math.abs(totalExpense) > 0) logCashChange(-totalExpense, '生活支出（含利息）');
   state.passiveEarned = round(state.passiveEarned + passiveIncome() * months * (smooth ? 100 : 1));
   state.salaryEarned = round(state.salaryEarned + (state.salary + state.tempSalary + spouseSalary()) * months);
+  if (smooth) state.smoothMonths += months;
   state.age += months * (state.age >= 50 ? 0.625 : 2 / 3);
   state.age = round(state.age);
   checkStageTransition();
@@ -6908,6 +6918,7 @@ function checkEnd() {
   // 自动进入顺流层优先于死亡判定，避免刚达标就猝死
   if (state.layer === 'normal' && passiveIncome() >= monthlyExpense()) {
     state.layer = 'smooth';
+    if (state.smoothEntryAge === null) state.smoothEntryAge = state.age;
     log('🌟 被动收入超过支出，你进入顺流层！被动收入×100');
     showSmoothOverlay();
     return true;
@@ -7771,41 +7782,79 @@ function endGame(reason) {
   document.getElementById('game-page').classList.add('hidden');
   document.getElementById('result-page').classList.remove('hidden');
   const fi = freedomIndex();
+  const smoothNow = state.layer === 'smooth';
   document.getElementById('result-title').textContent = '人生结算 · ' + reason;
   document.getElementById('result-freedom').textContent = fi + '%';
   document.getElementById('r-cash').textContent = fmtMoney(state.cash);
   document.getElementById('r-assets').textContent = fmtMoney(state.assets.reduce((s, a) => s + a.marketValue * a.quantity, 0));
   document.getElementById('r-debt').textContent = fmtMoney(totalDebt());
-  document.getElementById('r-passive').textContent = fmtMoney(passiveIncome());
+  // 顺流层按实际结算口径显示被动收入（×100）
+  document.getElementById('r-passive').textContent = fmtMoney(passiveIncome() * (smoothNow ? 100 : 1)) + (smoothNow ? '（顺流×100）' : '');
   document.getElementById('r-expense').textContent = fmtMoney(monthlyExpense());
   document.getElementById('r-salary').textContent = fmtMoney(state.salaryEarned);
   document.getElementById('r-passive-total').textContent = fmtMoney(state.passiveEarned);
   document.getElementById('r-charity').textContent = fmtMoney(state.charityTotal);
 
-  let insight = '';
-  if (reason.includes('创富家')) insight = '你用现金证明了自己的财富创造能力。';
-  else if (reason.includes('慈善家')) insight = '你用财富回馈社会，成为真正的慈善家。';
-  else if (reason.includes('梦想家')) insight = '你买下了梦想，活出了自己想要的人生。';
-  else if (reason.includes('猝死')) insight = '你追求财富的脚步太快，精力透支，倒在了路上。';
-  else if (reason.includes('精力耗尽')) insight = '你的精力已用尽，人生的牌桌再无筹码可下。';
-  else if (reason.includes('局势')) insight = '你走到了人生的死胡同，无论往哪走都是悬崖。';
-  else if (reason.includes('破产')) insight = '现金流断裂，资产无法变现，你在富有中破产。';
-  else if (reason.includes('到站') || reason.includes('60岁')) insight = '60岁到了，人生到站。';
-  else insight = '你的人生走到了终点。';
-
-  if (fi >= 120) insight += ' 你实现了财务自由。';
-  else if (fi >= 100) insight += ' 你接近自由，但还差一点被动收入。';
-  else if (fi >= 60) insight += ' 你走过了大半段路，但主要还在用时间换钱。';
-  else insight += ' 你这一生，仍被支出追着跑。';
-
-  // 显示所有成就
-  if (state.achievements.length > 0) {
-    insight += ' 这一生，你' + state.achievements.join('、') + '。';
-  }
-
-  document.getElementById('r-insight').textContent = insight;
+  // ===== 人生总结（总分总结构） =====
+  const summary = buildLifeSummary(reason, fi);
+  document.getElementById('r-insight').innerHTML = summary.html;
   document.getElementById('share-index').textContent = fi + '%';
-  document.getElementById('share-line').textContent = insight;
+  document.getElementById('share-line').textContent = summary.shareLine;
+}
+
+function buildLifeSummary(reason, fi) {
+  const wasSmooth = state.smoothEntryAge !== null;
+  const inSmoothNow = state.layer === 'smooth';
+  // 顺流年数：仍在顺流按入圈年龄精确算，掉出过则按tick估算
+  const smoothYears = (inSmoothNow && wasSmooth)
+    ? Math.round((state.age - state.smoothEntryAge) * 10) / 10
+    : Math.round(state.smoothMonths * (2 / 3) * 10) / 10;
+  const assetTotal = state.assets.reduce((s, a) => s + a.marketValue * a.quantity, 0);
+
+  // --- 总：定性结论 ---
+  let verdict;
+  if (reason.includes('创富家')) verdict = '你用现金证明了自己的财富创造能力。';
+  else if (reason.includes('慈善家')) verdict = '你用财富回馈社会，成为真正的慈善家。';
+  else if (reason.includes('梦想家')) verdict = '你买下了梦想，活出了自己想要的人生。';
+  else if (reason.includes('猝死') || reason.includes('精力耗尽')) verdict = '你赢得了数字，却透支了身体。';
+  else if (reason.includes('破产')) verdict = '现金流断裂，击穿了所有规划。';
+  else if (inSmoothNow) verdict = '你走出了"用时间换钱"的人生。';
+  else if (wasSmooth) verdict = '你曾触摸过顺流层，最后回到了平流。';
+  else if (fi >= 100) verdict = '你在终点前，摸到了自由的门槛。';
+  else if (state.passiveEarned > state.salaryEarned) verdict = '你的财富越来越依靠资产，而非汗水。';
+  else verdict = '你这一生，主要靠时间换取收入。';
+
+  // --- 分：人生事实 ---
+  const facts = [];
+  if (wasSmooth) {
+    facts.push(Math.floor(state.smoothEntryAge) + '岁那年，你的被动收入第一次超过支出，进入顺流层。在顺流中度过了约 ' + smoothYears + ' 年，被动收入累计 ' + fmtMoney(state.passiveEarned) + '。');
+  } else {
+    facts.push('一生被动收入累计 ' + fmtMoney(state.passiveEarned) + '，工资收入 ' + fmtMoney(state.salaryEarned) + '。');
+  }
+  facts.push('谢幕时，你手握现金 ' + fmtMoney(state.cash) + '，资产 ' + fmtMoney(assetTotal) + '，负债 ' + fmtMoney(totalDebt()) + '。');
+  if (state.spouse) {
+    facts.push('身边有' + state.spouse.name + '相伴' + (state.children > 0 ? '，养育了 ' + state.children + ' 个孩子' : '') + '。');
+  } else if (state.children > 0) {
+    facts.push('你独自养育了 ' + state.children + ' 个孩子。');
+  } else {
+    facts.push('你一个人走完了这段旅程。');
+  }
+  if (state.charityTotal > 0) facts.push('你捐出了 ' + fmtMoney(state.charityTotal) + ' 用于慈善。');
+  if (state.achievements.length > 0) facts.push('你达成了' + state.achievements.join('、') + '成就。');
+
+  // --- 总：收尾 ---
+  let closing;
+  if (reason.includes('猝死') || reason.includes('精力耗尽')) closing = '人生这场牌局里，精力才是那张不能重抽的底牌。';
+  else if (reason.includes('破产')) closing = '但只要你读懂了现金流，下一局会完全不同。';
+  else if (inSmoothNow) closing = '赚钱对你而言，早已像呼吸一样自然。';
+  else if (wasSmooth) closing = '顺流的经历告诉你：自由不是终点，而是一种状态。';
+  else if (fi >= 100) closing = '再给一点时间，自由就是你的。';
+  else closing = '财富的意义不在数字，而在于你用它换来了怎样的一生。';
+
+  const html = '<div class="summary-verdict">' + verdict + '</div>' +
+    '<ul class="summary-facts">' + facts.map(f => '<li>' + f + '</li>').join('') + '</ul>' +
+    '<div class="summary-closing">' + closing + '</div>';
+  return { html, shareLine: verdict + ' ' + closing };
 }
 
 // =====================================================
