@@ -874,7 +874,7 @@ body::after{
 </div>
 
 <!-- FINANCE INPUT PANEL -->
-<div id="finance-panel" onclick="if(event.target===this){ closeFinancePanel(); }">
+<div id="finance-panel" onclick="if(event.target===this){ financeCardCache=null; closeFinancePanel(); finishCard(false); }">
   <div class="panel-box">
     <h3 id="finance-title">金融投资</h3>
     <div class="panel-row"><label>建议年分红率</label><value id="finance-rate">0%</value></div>
@@ -2408,7 +2408,8 @@ const DATA = {
               "married": true
             }
           },
-          "event": "marriage"
+          "event": "marriage",
+          "cond": "minCash:1"
         },
         {
           "label": "B",
@@ -2424,7 +2425,7 @@ const DATA = {
       "name": "生子",
       "ageRange": [
         28,
-        50
+        55
       ],
       "requires": {
         "married": true
@@ -2486,7 +2487,8 @@ const DATA = {
           "effect": {
             "cash": -2,
             "energy": -10
-          }
+          },
+          "cond": "minCash:2"
         },
         {
           "label": "B",
@@ -2519,7 +2521,7 @@ const DATA = {
         {
           "label": "B",
           "text": "投资赌一把",
-          "costDesc": "50%概率+2万到4万，50%概率亏损2万",
+          "costDesc": "50%概率+2万，50%概率亏损2万",
           "fate": [
             {
               "range": [
@@ -2631,7 +2633,8 @@ const DATA = {
           "effect": {
             "cash": -5,
             "energy": -5
-          }
+          },
+          "cond": "minCash:5"
         },
         {
           "label": "C",
@@ -2709,12 +2712,14 @@ const DATA = {
         {
           "label": "A",
           "text": "搬走",
-          "costDesc": "重置房租/子女学费等部分支出，精力+5",
+          "costDesc": "现金-1万，重置房租等部分支出，精力+5",
           "effect": {
             "baseExpense": -0.1,
             "childrenExpense": -0.05,
-            "energy": 5
-          }
+            "energy": 5,
+            "cash": -1
+          },
+          "cond": "minCash:1"
         },
         {
           "label": "B",
@@ -2941,8 +2946,8 @@ const DATA = {
       "type": "event",
       "name": "重返职场",
       "ageRange": [
-        30,
-        55
+        22,
+        60
       ],
       "requires": {
         "salaryZero": true
@@ -2980,8 +2985,8 @@ const DATA = {
       "type": "event",
       "name": "老东家召回",
       "ageRange": [
-        30,
-        55
+        22,
+        60
       ],
       "requires": {
         "salaryZero": true
@@ -3010,8 +3015,8 @@ const DATA = {
       "type": "event",
       "name": "猎头推荐",
       "ageRange": [
-        30,
-        55
+        22,
+        60
       ],
       "requires": {
         "salaryZero": true
@@ -3070,7 +3075,7 @@ const DATA = {
             "energy": -8
           },
           "bond": {
-            "苏敏": 1
+            "苏敏": 2
           },
           "cond": "minCash:2"
         },
@@ -3234,7 +3239,7 @@ const DATA = {
             "energy": -5
           },
           "bond": {
-            "周恺": 2
+            "周恺": 3
           },
           "cond": "minCash:3"
         },
@@ -3669,11 +3674,8 @@ const DATA = {
         {
           "label": "B",
           "text": "下次再说",
-          "costDesc": "现金-2万",
-          "effect": {
-            "cash": -2
-          },
-          "cond": "minCash:2"
+          "costDesc": "暂不聘请",
+          "effect": {}
         }
       ]
     }
@@ -3719,7 +3721,10 @@ const DATA = {
             "energy": -2
           }
         }
-      ]
+      ],
+      "requires": {
+        "married": 1
+      }
     },
     {
       "id": "Rev3",
@@ -4293,7 +4298,7 @@ const DATA = {
           "effect": {
             "energy": 8,
             "flags": {
-              "freeRestLeft": 3
+              "freeRestLeft": 1
             }
           }
         }
@@ -4312,7 +4317,7 @@ const DATA = {
         {
           "label": "A",
           "text": "审视社交圈",
-          "costDesc": "精力+3，见识扩展",
+          "costDesc": "精力+3，下次机会考察免费",
           "effect": {
             "energy": 3,
             "flags": {
@@ -4381,7 +4386,7 @@ const DATA = {
         {
           "label": "A",
           "text": "记录感恩",
-          "costDesc": "精力+4，下次机会考察费减半",
+          "costDesc": "精力+4，下次机会考察免费",
           "effect": {
             "energy": 4,
             "flags": {
@@ -4595,7 +4600,8 @@ const DATA = {
                 "cash": -1
               }
             }
-          ]
+          ],
+          "cond": "minCash:1"
         },
         {
           "label": "B",
@@ -4819,6 +4825,12 @@ const DATA = {
               "ability": "每轮+1精力"
             }
           }
+        },
+        {
+          "label": "B",
+          "text": "再想想",
+          "effect": {},
+          "costDesc": "跳过，无损失"
         }
       ]
     },
@@ -4845,6 +4857,12 @@ const DATA = {
               "ability": "免疫生病事件"
             }
           }
+        },
+        {
+          "label": "B",
+          "text": "再想想",
+          "effect": {},
+          "costDesc": "跳过，无损失"
         }
       ]
     },
@@ -4871,6 +4889,12 @@ const DATA = {
               "ability": "子女学费减半"
             }
           }
+        },
+        {
+          "label": "B",
+          "text": "再想想",
+          "effect": {},
+          "costDesc": "跳过，无损失"
         }
       ]
     },
@@ -4897,6 +4921,12 @@ const DATA = {
               "ability": "触发机会"
             }
           }
+        },
+        {
+          "label": "B",
+          "text": "再想想",
+          "effect": {},
+          "costDesc": "跳过，无损失"
         }
       ]
     },
@@ -4923,6 +4953,12 @@ const DATA = {
               "ability": "精力自由"
             }
           }
+        },
+        {
+          "label": "B",
+          "text": "再想想",
+          "effect": {},
+          "costDesc": "跳过，无损失"
         }
       ]
     }
@@ -4944,7 +4980,7 @@ const DATA = {
           "costDesc": "现金-500万，被动收入+20万/月",
           "effect": {
             "cash": -500,
-            "passiveIncome": 20
+            "passiveIncome": 0.2
           },
           "cond": "minCash:500"
         },
@@ -4971,7 +5007,8 @@ const DATA = {
           "text": "买下梦想",
           "costDesc": "现金-1000万，达成梦想家胜利",
           "effect": {
-            "dream": true
+            "dream": true,
+            "cash": -1000
           },
           "cond": "minCash:1000"
         },
@@ -5027,7 +5064,8 @@ const DATA = {
           "costDesc": "现金-300万",
           "effect": {
             "cash": -300
-          }
+          },
+          "cond": "minCash:300"
         },
         {
           "label": "B",
@@ -5062,7 +5100,7 @@ const DATA = {
           "costDesc": "现金-800万，被动收入+30万/月",
           "effect": {
             "cash": -800,
-            "passiveIncome": 30
+            "passiveIncome": 0.3
           },
           "cond": "minCash:800"
         },
@@ -5118,7 +5156,7 @@ const DATA = {
           "costDesc": "现金-600万，被动收入-5万/月（回报后代）",
           "effect": {
             "cash": -600,
-            "passiveIncome": -5,
+            "passiveIncome": -0.05,
             "dream": true
           },
           "cond": "minCash:600"
@@ -5176,7 +5214,8 @@ const DATA = {
           "effect": {
             "cash": -300,
             "energy": -15
-          }
+          },
+          "cond": "minCash:300"
         },
         {
           "label": "B",
@@ -5193,13 +5232,17 @@ const DATA = {
           "costDesc": "现金-150万",
           "effect": {
             "cash": -150
-          }
+          },
+          "cond": "minCash:150"
         },
         {
           "label": "D",
           "text": "请律师周旋",
           "effect": {},
-          "costDesc": "跳过，无损失"
+          "costDesc": "需已聘请法律顾问，零损失化解",
+          "requires": {
+            "contractShield": 1
+          }
         }
       ]
     },
@@ -5219,7 +5262,7 @@ const DATA = {
           "costDesc": "现金-500万，被动收入+15万/月",
           "effect": {
             "cash": -500,
-            "passiveIncome": 15
+            "passiveIncome": 0.15
           },
           "cond": "minCash:500"
         },
@@ -5277,7 +5320,8 @@ const DATA = {
           "effect": {
             "cash": -200,
             "removeSpouse": true
-          }
+          },
+          "cond": "minCash:200"
         },
         {
           "label": "B",
@@ -5303,7 +5347,10 @@ const DATA = {
           "effect": {},
           "costDesc": "跳过，无损失"
         }
-      ]
+      ],
+      "requires": {
+        "married": 1
+      }
     },
     {
       "id": "Sm13",
@@ -5321,7 +5368,7 @@ const DATA = {
           "costDesc": "现金-300万，被动收入+12万/月",
           "effect": {
             "cash": -300,
-            "passiveIncome": 12
+            "passiveIncome": 0.12
           },
           "cond": "minCash:300"
         },
@@ -5349,7 +5396,7 @@ const DATA = {
           "costDesc": "现金-500万，被动收入+20万/月",
           "effect": {
             "cash": -500,
-            "passiveIncome": 20
+            "passiveIncome": 0.2
           },
           "cond": "minCash:500"
         },
@@ -5377,7 +5424,7 @@ const DATA = {
           "costDesc": "现金-800万，被动收入+25万/月",
           "effect": {
             "cash": -800,
-            "passiveIncome": 25
+            "passiveIncome": 0.25
           },
           "cond": "minCash:800"
         },
@@ -5405,7 +5452,7 @@ const DATA = {
           "costDesc": "现金-600万，被动收入+18万/月",
           "effect": {
             "cash": -600,
-            "passiveIncome": 18
+            "passiveIncome": 0.18
           },
           "cond": "minCash:600"
         },
@@ -5433,7 +5480,7 @@ const DATA = {
           "costDesc": "现金-1000万，被动收入+35万/月",
           "effect": {
             "cash": -1000,
-            "passiveIncome": 35
+            "passiveIncome": 0.35
           },
           "cond": "minCash:1000"
         },
@@ -5499,7 +5546,7 @@ const DATA = {
           "costDesc": "现金-300万，被动收入+8万/月",
           "effect": {
             "cash": -300,
-            "passiveIncome": 8,
+            "passiveIncome": 0.08,
             "flags": {
               "helpedZhoukai": true
             }
@@ -5556,7 +5603,7 @@ const DATA = {
         {
           "label": "A",
           "text": "全力培养",
-          "costDesc": "现金-400万，月支出+0.3万（孩子越多越贵）",
+          "costDesc": "现金-400万，子女抚养费+0.2万/月/孩",
           "effect": {
             "cash": -400,
             "childrenExpense": 0.2,
@@ -5570,7 +5617,10 @@ const DATA = {
           "effect": {},
           "costDesc": "跳过，无损失"
         }
-      ]
+      ],
+      "requires": {
+        "children": 1
+      }
     },
     {
       "id": "Sm22",
@@ -5673,7 +5723,7 @@ const DATA = {
           "effect": {
             "cash": -50,
             "energy": -5,
-            "passiveIncome": 3
+            "passiveIncome": 0.03
           },
           "cond": "minCash:50"
         },
@@ -5818,10 +5868,10 @@ const DATA = {
         {
           "label": "A",
           "text": "迎接TA",
-          "costDesc": "月支出+3万，精力-5",
+          "costDesc": "精力-5，孩子+1，抚养费+0.15万/月/孩",
           "effect": {
             "energy": -5,
-            "baseExpense": 3
+            "children": 1
           }
         },
         {
@@ -5909,7 +5959,7 @@ const DATA = {
           "costDesc": "现金-200万，被动收入+8万/月",
           "effect": {
             "cash": -200,
-            "passiveIncome": 8
+            "passiveIncome": 0.08
           },
           "cond": "minCash:200"
         },
@@ -5965,7 +6015,7 @@ const DATA = {
           "costDesc": "现金-50万，被动收入+2万/月",
           "effect": {
             "cash": -50,
-            "passiveIncome": 2
+            "passiveIncome": 0.02
           },
           "cond": "minCash:50"
         },
@@ -6072,7 +6122,6 @@ function initState(profKey) {
     restCount: 0,
     unemployed: false,
     achievements: [],
-    freeRestLeft: 1,
     flags: {},
     cardsSeen: [],
     decisionLog: [],
@@ -6202,8 +6251,9 @@ function isNarrative(type) {
 function checkRequires(c) {
   if (!c.requires) return true;
   for (const [k, v] of Object.entries(c.requires)) {
-    if (k === 'hasAssets') return state.assets.length > 0;
-    if (k === 'salaryZero') return state.salary === 0;
+    if (k === 'hasAssets') { if (!(state.assets.length > 0)) return false; continue; }
+    if (k === 'salaryZero') { if (state.salary !== 0) return false; continue; }
+    if (k === 'children') { if (state.children < v) return false; continue; }
     const level = state.flags[k] || 0;
     if (level < v) return false;
   }
@@ -6581,6 +6631,7 @@ function applyEffect(e, reason) {
   }
   if (e.spouse) {
     state.spouse = { ...e.spouse };
+    state.flags.married = true;
   }
   if (e.gameOver) {
     state.gameOver = true;
@@ -6596,7 +6647,7 @@ function applyEffect(e, reason) {
       // 显示逆流层弹窗（带背景图）
       const el = document.getElementById('stage-overlay');
       document.getElementById('stage-title').textContent = '跌入逆流层';
-      document.getElementById('stage-desc').textContent = '你遭遇了重大挫折，进入了人生的低谷期。逆流层将持续3轮，各项消耗加倍，但每一次逆流都暗含恩典。';
+      document.getElementById('stage-desc').textContent = '你遭遇了重大挫折，进入了人生的低谷期。逆流将持续3轮，但每一次逆流都暗含恩典。';
       el.className = 'open layer-reverse';
       if (stageOverlayTimer) clearTimeout(stageOverlayTimer);
       stageOverlayTimer = setTimeout(() => hideStageOverlay(), 3000);
@@ -6610,8 +6661,13 @@ function applyEffect(e, reason) {
     }
   }
   if (e.cashMultiplier !== undefined) {
-    const change = round(state.cash * e.cashMultiplier - state.cash);
-    state.cash = Math.max(e.cashFloor || 0, round(state.cash * e.cashMultiplier));
+    let mult = e.cashMultiplier;
+    if (state.flags.contractShield && mult < 1) {
+      mult = mult + (1 - mult) / 2;
+      log('⚖️ 法律顾问介入，帮你追回了一半损失');
+    }
+    const change = round(state.cash * mult - state.cash);
+    state.cash = Math.max(e.cashFloor || 0, round(state.cash * mult));
     logCashChange(change, '投资被骗');
   }
   if (e.tempSalaryRounds) {
@@ -6989,9 +7045,13 @@ function restRound() {
   if (state.gameOver) return;
   // 失业状态下投简历
   if (state.unemployed) {
+    if (state.restCount >= 3) {
+      log('本轮已投递多次，先休整一下再试'); return;
+    }
     if (state.energy < 3) {
       log('精力不足，无法投简历（需要3点精力）'); return;
     }
+    state.restCount += 1;
     state.energy = Math.floor(state.energy - 3);
     const roll = rollDice();
     updateStats();
@@ -7014,9 +7074,9 @@ function restRound() {
   }
   const roll = rollDice();
   let cost = 0;
-  if (state.freeRestLeft > 0) {
-    state.freeRestLeft -= 1;
-    log('☕ 休息一轮，掷出 ' + roll + ' 点，精力+' + roll + '（免费次数剩余' + state.freeRestLeft + '）');
+  if ((state.flags.freeRestLeft || 0) > 0) {
+    state.flags.freeRestLeft -= 1;
+    log('☕ 休息一轮，掷出 ' + roll + ' 点，精力+' + roll + '（免费次数剩余' + state.flags.freeRestLeft + '）');
   } else {
     cost = monthlyExpense();
     if (state.cash < cost) {
@@ -7142,6 +7202,10 @@ function updateStats() {
   restBtn.textContent = state.unemployed ? '投简历' : '休息一轮';
   updateEnergyWarning();
   renderAssetPanel();
+  // 明细面板打开时实时刷新
+  if (_detailType && document.getElementById('detail-inline').classList.contains('open')) {
+    document.getElementById('detail-inline-content').innerHTML = buildDetailContent(_detailType);
+  }
 }
 
 function updateEnergyWarning() {
@@ -7166,6 +7230,7 @@ function log(msg) {
 function drawCard() {
   playDiceSound();
   if (state.gameOver) return;
+  state.restCount = 0;
   const btn = document.getElementById('draw-btn');
   btn.disabled = true;
   btn.classList.add('hidden');
@@ -7250,7 +7315,7 @@ function renderOpportunityDirections() {
   for (const d of DIRECTIONS) {
     const btn = document.createElement('button');
     btn.className = 'direction-btn';
-    btn.innerHTML = '<b>' + d.label + '</b><span class="direction-cost">考察费 ¥' + (d.cost * 10).toFixed(0) + '00 / ' + d.desc + '</span>';
+    btn.innerHTML = '<b>' + d.label + '</b><span class="direction-cost">考察费 ' + fmtMoney(d.cost) + ' / ' + d.desc + '</span>';
     btn.onclick = () => chooseDirection(d);
     panel.appendChild(btn);
   }
@@ -7270,6 +7335,7 @@ function chooseDirection(d) {
     state.cash = round(state.cash - d.cost);
     logCashChange(-d.cost, '考察费');
     log('考察费 -' + fmtMoney(d.cost));
+    updateStats();
   } else {
     log('🎁 贵人相助，本次考察免费');
     state.flags.nextOpportunityFree = false;
@@ -7304,13 +7370,15 @@ function renderOptions(card) {
   let anyAvailable = false;
   let allEnergyBlocked = true;
   for (const opt of card.options) {
-    const disabled = !checkCond(opt.cond) || state.gameOver;
+    const reqBlocked = opt.requires && !checkRequires(opt);
+    const disabled = !checkCond(opt.cond) || reqBlocked || state.gameOver;
     const energyCost = optionEnergyCost(opt);
     const energyBlocked = !canChooseByEnergy(energyCost);
     if (!disabled && !energyBlocked) anyAvailable = true;
     if (!energyBlocked) allEnergyBlocked = false;
     const btn = document.createElement('button');
     btn.innerHTML = '<b>' + opt.label + '</b>. ' + escapeHtml(opt.text) + (opt.costDesc ? '<span class="option-cost">' + opt.costDesc + '</span>' : '');
+    if (reqBlocked) btn.innerHTML += '<span class="option-cost">（未满足条件）</span>';
     btn.disabled = disabled || energyBlocked;
     if (energyBlocked) btn.classList.add('energy-blocked');
     btn.onclick = () => chooseOption(opt);
@@ -7554,7 +7622,7 @@ function buildDebtDetail() {
   } else {
     for (let i = 0; i < state.loans.length; i++) {
       const l = state.loans[i];
-      html += '<tr><td>银行贷款 #' + (i + 1) + '</td><td>' + fmtMoney(l.amount) + '</td><td>' + fmtMoney(round(l.amount * (l.interest || 0.005))) + '</td></tr>';
+      html += '<tr><td>银行贷款 #' + (i + 1) + '</td><td>' + fmtMoney(l.amount) + '</td><td>' + fmtMoney(round(l.amount * (l.interestRate || 0.005))) + '</td></tr>';
     }
   }
   html += '</tbody></table>';
@@ -7722,7 +7790,7 @@ function endGame(reason) {
   else if (reason.includes('精力耗尽')) insight = '你的精力已用尽，人生的牌桌再无筹码可下。';
   else if (reason.includes('局势')) insight = '你走到了人生的死胡同，无论往哪走都是悬崖。';
   else if (reason.includes('破产')) insight = '现金流断裂，资产无法变现，你在富有中破产。';
-  else if (reason.includes('时间')) insight = '60岁到了，人生到站。';
+  else if (reason.includes('到站') || reason.includes('60岁')) insight = '60岁到了，人生到站。';
   else insight = '你的人生走到了终点。';
 
   if (fi >= 120) insight += ' 你实现了财务自由。';
