@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><style>
+body{ background:#0a0a0f; display:flex; gap:20px; justify-content:center; align-items:center; min-height:100vh; margin:0; }
+.dice{
+  width:56px; height:56px;
+  background:linear-gradient(145deg, #f5f0e6, #d8d0c0);
+  border:1.5px solid rgba(201,162,39,0.7); border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.6), inset 0 -3px 6px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.55);
+}
+.pip-grid{
+  display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(3,1fr);
+  width:68%; height:68%; gap:2px;
+}
+.pip{ border-radius:50%; background:transparent; }
+.pip.on{
+  background:radial-gradient(circle at 35% 35%, #4a4a55, #1a1a25);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.4);
+}
+</style></head><body>
+<script>
+const DICE_FACES = { 1:[4], 2:[0,8], 3:[0,4,8], 4:[0,2,6,8], 5:[0,2,4,6,8], 6:[0,2,3,5,6,8] };
+for (let v = 1; v <= 6; v++) {
+  const d = document.createElement('div'); d.className = 'dice';
+  const g = document.createElement('span'); g.className = 'pip-grid';
+  for (let i = 0; i < 9; i++) {
+    const p = document.createElement('span');
+    p.className = 'pip' + (DICE_FACES[v].includes(i) ? ' on' : '');
+    g.appendChild(p);
+  }
+  d.appendChild(g); document.body.appendChild(d);
+}
+</script>
+</body></html>
