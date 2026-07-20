@@ -401,6 +401,7 @@ body::after{
 .chip-energy{ background:rgba(106,154,236,0.16); color:#8ab2f0; }
 .chip-energy-up{ background:rgba(80,227,194,0.14); color:#6fd8c0; }
 .chip-neutral{ background:rgba(136,135,128,0.14); color:var(--muted); }
+.chip-rate{ background:rgba(232,200,122,0.18); color:#e8c87a; font-weight:600; }
 .smooth-mult{ font-size:0.68rem; color:var(--gold2); background:rgba(212,168,83,0.15); padding:1px 5px; border-radius:4px; margin-left:6px; }
 
 #draw-btn{
@@ -1286,7 +1287,8 @@ const DATA = {
             "energy": -10,
             "sideIncome": 0.25
           },
-          "cond": "minCash:0.5"
+          "cond": "minCash:0.5",
+          "successRate": 80
         },
         {
           "label": "B",
@@ -1342,7 +1344,8 @@ const DATA = {
             "energy": -8,
             "sideIncome": 0.35
           },
-          "cond": "minCash:1"
+          "cond": "minCash:1",
+          "successRate": 75
         },
         {
           "label": "B",
@@ -1371,7 +1374,8 @@ const DATA = {
             "energy": -5,
             "sideIncome": 0.2
           },
-          "cond": "minCash:0.4"
+          "cond": "minCash:0.4",
+          "successRate": 85
         },
         {
           "label": "B",
@@ -1427,7 +1431,8 @@ const DATA = {
             "energy": -6,
             "sideIncome": 0.2
           },
-          "cond": "minCash:0.3"
+          "cond": "minCash:0.3",
+          "successRate": 80
         },
         {
           "label": "B",
@@ -1886,7 +1891,8 @@ const DATA = {
               "canSell": true
             }
           },
-          "cond": "minCash:7"
+          "cond": "minCash:7",
+          "successRate": 75
         },
         {
           "label": "B",
@@ -1923,7 +1929,8 @@ const DATA = {
               "canSell": true
             }
           },
-          "cond": "minCash:12"
+          "cond": "minCash:12",
+          "successRate": 70
         },
         {
           "label": "B",
@@ -1960,7 +1967,8 @@ const DATA = {
               "canSell": true
             }
           },
-          "cond": "minCash:20"
+          "cond": "minCash:20",
+          "successRate": 65
         },
         {
           "label": "B",
@@ -1997,7 +2005,8 @@ const DATA = {
               "canSell": true
             }
           },
-          "cond": "minCash:5"
+          "cond": "minCash:5",
+          "successRate": 80
         },
         {
           "label": "B",
@@ -2034,7 +2043,8 @@ const DATA = {
               "canSell": true
             }
           },
-          "cond": "minCash:30"
+          "cond": "minCash:30",
+          "successRate": 60
         },
         {
           "label": "B",
@@ -2071,7 +2081,8 @@ const DATA = {
               "canSell": true
             }
           },
-          "cond": "minCash:10"
+          "cond": "minCash:10",
+          "successRate": 85
         },
         {
           "label": "B",
@@ -2108,7 +2119,8 @@ const DATA = {
               "canSell": true
             }
           },
-          "cond": "minCash:15"
+          "cond": "minCash:15",
+          "successRate": 60
         },
         {
           "label": "B",
@@ -2145,7 +2157,8 @@ const DATA = {
               "canSell": true
             }
           },
-          "cond": "minCash:8"
+          "cond": "minCash:8",
+          "successRate": 65
         },
         {
           "label": "B",
@@ -2184,7 +2197,8 @@ const DATA = {
               "canSell": true
             }
           },
-          "cond": "minCash:8"
+          "cond": "minCash:8",
+          "successRate": 55
         },
         {
           "label": "B",
@@ -2221,7 +2235,8 @@ const DATA = {
               "canSell": true
             }
           },
-          "cond": "minCash:15"
+          "cond": "minCash:15",
+          "successRate": 50
         },
         {
           "label": "B",
@@ -2258,7 +2273,8 @@ const DATA = {
               "canSell": true
             }
           },
-          "cond": "minCash:12"
+          "cond": "minCash:12",
+          "successRate": 45
         },
         {
           "label": "B",
@@ -2295,7 +2311,8 @@ const DATA = {
               "canSell": true
             }
           },
-          "cond": "minCash:25"
+          "cond": "minCash:25",
+          "successRate": 45
         },
         {
           "label": "B",
@@ -2332,7 +2349,8 @@ const DATA = {
               "canSell": true
             }
           },
-          "cond": "minCash:12"
+          "cond": "minCash:12",
+          "successRate": 40
         },
         {
           "label": "B",
@@ -2369,7 +2387,8 @@ const DATA = {
               "canSell": true
             }
           },
-          "cond": "minCash:6"
+          "cond": "minCash:6",
+          "successRate": 60
         },
         {
           "label": "B",
@@ -2406,7 +2425,8 @@ const DATA = {
               "canSell": true
             }
           },
-          "cond": "minCash:2"
+          "cond": "minCash:2",
+          "successRate": 65
         },
         {
           "label": "B",
@@ -2443,7 +2463,8 @@ const DATA = {
               "canSell": true
             }
           },
-          "cond": "minCash:3"
+          "cond": "minCash:3",
+          "successRate": 55
         },
         {
           "label": "B",
@@ -2480,7 +2501,8 @@ const DATA = {
               "canSell": true
             }
           },
-          "cond": "minCash:20"
+          "cond": "minCash:20",
+          "successRate": 50
         },
         {
           "label": "B",
@@ -6135,6 +6157,8 @@ const DATA = {
     }
   ]
 };
+;
+;
 
 const DIRECTIONS = [
   { key: 'side', label: '做副业', cost: 0.1, desc: '增加主动收入，消耗精力' },
@@ -7614,6 +7638,9 @@ function renderOptions(card) {
     if (!energyBlocked) allEnergyBlocked = false;
     const btn = document.createElement('button');
     btn.innerHTML = '<b>' + opt.label + '</b>. ' + escapeHtml(opt.text) + renderCostChips(opt.costDesc);
+    if (opt.successRate !== undefined && opt.successRate < 100) {
+      btn.innerHTML += '<span class="cost-chip chip-rate">成功率' + opt.successRate + '%</span>';
+    }
     if (reqBlocked) btn.innerHTML += '<span class="option-cost">（未满足条件）</span>';
     btn.disabled = disabled || energyBlocked;
     if (energyBlocked) btn.classList.add('energy-blocked');
@@ -7671,6 +7698,33 @@ function chooseOption(opt) {
   });
 
   freshSubCard = false;
+
+  // ===== 成功率判定：投资类卡牌有失败可能 =====
+  if (opt.successRate !== undefined && opt.successRate < 100) {
+    const dice = 1 + Math.floor(Math.random() * 100);
+    if (dice > opt.successRate) {
+      const e = opt.effect || {};
+      log('💔 项目失败了！（成功率' + opt.successRate + '%，掷出' + dice + '）');
+      if (e.cash !== undefined) {
+        state.cash = round(state.cash + e.cash);
+        logCashChange(e.cash, '项目失败，投入打水漂');
+      }
+      if (e.energy !== undefined && e.energy < 0) {
+        state.energy = Math.floor(state.energy + e.energy);
+        log('⚡ 消耗了' + Math.abs(e.energy) + '点精力');
+      }
+      state.energy = Math.floor(state.energy - 2);
+      log('⚡ 额外消耗2点精力收拾烂摊子');
+      updateStats();
+      if (state.energy < -2) { endGame('精力耗尽猝死'); return; }
+      document.getElementById('card-options').innerHTML = '';
+      finishCard(true);
+      return;
+    }
+    log('✨ 项目成功了！（成功率' + opt.successRate + '%，掷出' + dice + '）');
+  }
+  // ===== 成功率判定结束 =====
+
   resolveOption(opt);
 
   // 如果 resolveOption 创建了新的 subCard（如结婚→相亲），让玩家继续选择 subCard
