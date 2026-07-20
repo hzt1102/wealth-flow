@@ -296,6 +296,11 @@ body::after{
   overflow:hidden;
 }
 .card-back-art{ position:absolute; inset:0; width:100%; height:100%; display:block; }
+/* 中心罗盘：永远占卡高62%，不受卡片宽高比影响 */
+.card-back-emblem{
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  height:62%; aspect-ratio:1/1; display:block;
+}
 .flipped{ transform:rotateY(180deg); }
 
 .card-type{
@@ -6209,18 +6214,15 @@ let marketSelectedAsset = null;
 let financeCardCache = null;
 let freshSubCard = false; // 标记是否在本轮选择中产生了新 subCard
 
-// ===== 卡背艺术（罗盘星芒·横版，600×280与游戏卡片同比例） =====
+// ===== 卡背艺术（罗盘星芒·横版） =====
+// 结构：背景SVG（底色+侧虚线+外框，可自由缩放） + 中心罗盘SVG（CSS锚定卡高62%，不受比例影响）
 function cardBackSVG(uid) {
-  return '<svg class="card-back-art" viewBox="0 0 600 280" preserveAspectRatio="xMidYMid slice">'
+  const bg = '<svg class="card-back-art" viewBox="0 0 600 280" preserveAspectRatio="xMidYMid slice">'
     + '<defs>'
     + '<radialGradient id="gE' + uid + '" cx="0.5" cy="0.5" r="0.6">'
-    + '<stop offset="0" stop-color="#d4a853" stop-opacity="0.13"/>'
+    + '<stop offset="0" stop-color="#d4a853" stop-opacity="0.12"/>'
     + '<stop offset="1" stop-color="#d4a853" stop-opacity="0"/>'
     + '</radialGradient>'
-    + '<linearGradient id="sGE' + uid + '" x1="0" y1="0" x2="1" y2="1">'
-    + '<stop offset="0" stop-color="#e8c87a"/>'
-    + '<stop offset="1" stop-color="#b8942e"/>'
-    + '</linearGradient>'
     + '</defs>'
     + '<rect width="600" height="280" fill="#0e0e15"/>'
     + '<rect width="600" height="280" fill="url(#gE' + uid + ')"/>'
@@ -6232,7 +6234,16 @@ function cardBackSVG(uid) {
     + '<line x1="40" y1="168" x2="170" y2="168"/>'
     + '<line x1="430" y1="168" x2="560" y2="168"/>'
     + '</g>'
-    + '<g transform="translate(300 140)" fill="none" stroke="#d4a853">'
+    + '<rect x="14" y="14" width="572" height="252" rx="12" fill="none" stroke="#d4a853" stroke-opacity="0.3"/>'
+    + '</svg>';
+  const emblem = '<svg class="card-back-emblem" viewBox="0 0 200 200">'
+    + '<defs>'
+    + '<linearGradient id="sGE' + uid + '" x1="0" y1="0" x2="1" y2="1">'
+    + '<stop offset="0" stop-color="#e8c87a"/>'
+    + '<stop offset="1" stop-color="#b8942e"/>'
+    + '</linearGradient>'
+    + '</defs>'
+    + '<g transform="translate(100 100)" fill="none" stroke="#d4a853">'
     + '<circle r="85" stroke-opacity="0.2"/>'
     + '<circle r="68" stroke-opacity="0.32"/>'
     + '<circle r="48" stroke-opacity="0.48"/>'
@@ -6240,8 +6251,8 @@ function cardBackSVG(uid) {
     + '<rect x="-38" y="-38" width="76" height="76"/>'
     + '<rect x="-38" y="-38" width="76" height="76" transform="rotate(45)"/>'
     + '</g>'
-    + '<rect x="-24" y="-24" width="48" height="48" transform="rotate(45)" stroke="url(#sGE' + uid + ')" stroke-opacity="0.9" stroke-width="1.5"/>'
-    + '<circle r="9" stroke="url(#sGE' + uid + ')" stroke-width="1.5"/>'
+    + '<rect x="-24" y="-24" width="48" height="48" transform="rotate(45)" stroke="url(#sGE' + uid + ')" stroke-opacity="0.9" stroke-width="2.5"/>'
+    + '<circle r="9" stroke="url(#sGE' + uid + ')" stroke-width="2.5"/>'
     + '<circle r="3.5" fill="#e8c87a" stroke="none"/>'
     + '<g stroke-opacity="0.3">'
     + '<line x1="0" y1="-97" x2="0" y2="-85"/>'
@@ -6249,8 +6260,8 @@ function cardBackSVG(uid) {
     + '<line x1="-97" y1="0" x2="-85" y2="0"/>'
     + '<line x1="97" y1="0" x2="85" y2="0"/>'
     + '</g></g>'
-    + '<rect x="14" y="14" width="572" height="252" rx="12" fill="none" stroke="#d4a853" stroke-opacity="0.3"/>'
     + '</svg>';
+  return bg + emblem;
 }
 document.querySelectorAll('.card-back').forEach((el, i) => { el.innerHTML = cardBackSVG(i); });
 
