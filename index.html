@@ -401,6 +401,7 @@ body::after{
 .chip-energy{ background:rgba(106,154,236,0.16); color:#8ab2f0; }
 .chip-energy-up{ background:rgba(80,227,194,0.14); color:#6fd8c0; }
 .chip-neutral{ background:rgba(136,135,128,0.14); color:var(--muted); }
+.smooth-mult{ font-size:0.68rem; color:var(--gold2); background:rgba(212,168,83,0.15); padding:1px 5px; border-radius:4px; margin-left:6px; }
 
 #draw-btn{
   text-align:center; max-width:300px; font-weight:600;
@@ -6351,6 +6352,10 @@ function childrenExpense() {
 function passiveIncome() {
   return round(state.assets.reduce((s, a) => s + a.passiveIncome * a.quantity, 0));
 }
+// 顺流层显示口径：被动收入按实际结算×100
+function displayPassive() {
+  return passiveIncome() * (state.layer === 'smooth' ? 100 : 1);
+}
 function monthlyExpense() {
   return round(state.baseExpense + spouseExpense() + childrenExpense() + loanInterest());
 }
@@ -7381,7 +7386,7 @@ function updateStats() {
   document.getElementById('s-cash').textContent = fmtMoney(state.cash);
   document.getElementById('s-assets').textContent = fmtMoney(state.assets.reduce((s, a) => s + a.marketValue * a.quantity, 0));
   document.getElementById('s-debt').textContent = fmtMoney(totalDebt());
-  document.getElementById('s-passive').textContent = fmtMoney(passiveIncome());
+  document.getElementById('s-passive').textContent = fmtMoney(displayPassive());
   document.getElementById('s-expense').textContent = fmtMoney(monthlyExpense());
   const fi = freedomIndex();
   const progressEl = document.getElementById('s-progress');
@@ -7862,19 +7867,20 @@ function buildDebtDetail() {
 }
 
 function buildPassiveDetail() {
+  const mult = state.layer === 'smooth' ? 100 : 1;
   let html = '<table><thead><tr><th>来源</th><th>月被动收入</th></tr></thead><tbody>';
   if (!state.assets.length) {
     html += '<tr><td colspan="2" class="empty">暂无被动收入来源</td></tr>';
   } else {
     for (const a of state.assets) {
-      const pi = a.passiveIncome * a.quantity;
+      const pi = a.passiveIncome * a.quantity * mult;
       if (pi > 0) {
-        html += '<tr><td>' + escapeHtml(a.name) + '</td><td>' + fmtMoney(pi) + '</td></tr>';
+        html += '<tr><td>' + escapeHtml(a.name) + (mult > 1 ? '<span class="smooth-mult">×100</span>' : '') + '</td><td>' + fmtMoney(pi) + '</td></tr>';
       }
     }
   }
   html += '</tbody></table>';
-  html += '<div class="dl-row dl-total"><span class="dl-label">被动收入合计</span><span class="dl-value">' + fmtMoney(passiveIncome()) + '/月</span></div>';
+  html += '<div class="dl-row dl-total"><span class="dl-label">被动收入合计' + (mult > 1 ? '（顺流×100）' : '') + '</span><span class="dl-value">' + fmtMoney(displayPassive()) + '/月</span></div>';
   return html;
 }
 
